@@ -3,9 +3,10 @@ import { motion } from "framer-motion";
 
 type Props = {
   startAnimation: boolean;
+  img_path: string;
 };
 
-export default function SmallWindow({ startAnimation }: Props) {
+export default function SmallWindow({ startAnimation, img_path }: Props) {
   return (
     <div className="absolute bg-white mobile:w-small w-400 desktop:w-400 max-w-400 min-h-small h-small rounded-lg -right-10 bottom-10 shadow-lg">
       {/* top  */}
@@ -24,7 +25,7 @@ export default function SmallWindow({ startAnimation }: Props) {
           }}
           initial={{ opacity: 0 }}
         >
-          <motion.img src={"../../src/assets/chatgpt.png"} alt="website" />
+          <motion.img src={img_path} alt="website" />
         </motion.div>
       )}
     </div>

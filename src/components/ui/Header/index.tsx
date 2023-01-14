@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 
 import Auth from "../../auth/Auth";
 
 export default function Header() {
   const [showLoginForm, setShowLoginForm] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   return (
     <div className="flex justify-between items-center p-2">
@@ -21,18 +23,18 @@ export default function Header() {
           GoShort
         </a>
       </div>
-      <motion.input
+      <motion.div
+        custom={Link}
+        onClick={() => navigate("/register")}
         whileHover={{
           y: -1.2,
           transition: { duration: 0.3, ease: "easeIn" },
         }}
         initial={{ y: 1 }}
-        type="submit"
-        value="login"
-        className="rounded py-2 px-4 hover:bg-light-green text-white bg-dark-green capitalize font-bold"
-        onClick={() => setShowLoginForm(!showLoginForm)}
-      />
-      {showLoginForm && <Auth closeForm={setShowLoginForm} />}
+        className="rounded py-2 px-4 hover:bg-light-green text-white bg-dark-green capitalize font-bold cursor-pointer"
+      >
+        login
+      </motion.div>
     </div>
   );
 }

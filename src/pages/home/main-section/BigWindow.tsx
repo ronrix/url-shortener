@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 
 type Props = {
   index: number;
-  text_typing_animation: string;
+  text_typing_urls: string;
   startAnimation: boolean;
   sample_short_version_of_urls: string;
 };
 
 export default function BigWindow({
   index,
-  text_typing_animation,
+  text_typing_urls,
   startAnimation,
   sample_short_version_of_urls,
 }: Props) {
@@ -28,14 +28,8 @@ export default function BigWindow({
         key={index}
         className="text-white mt-10 ml-4 tracking-wide inline-block text-sm relative"
       >
-        {text_typing_animation.slice(0, index)}
-        <motion.div
-          animate={{
-            scale: [1, 0.7, 1],
-            transition: { ease: "easeIn", delay: 0.1, repeat: Infinity },
-          }}
-          className="bg-blue-400 px-1 h-4 inline-block self-end"
-        ></motion.div>
+        {text_typing_urls.slice(0, index)}
+        <div className="bg-light-green px-1 h-4 inline-block self-end"></div>
       </motion.div>
       {/* showing json format of all shortened urls */}
       {startAnimation && (
