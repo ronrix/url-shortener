@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-import Auth from "../auth/Auth";
+import Auth from "../../auth/Auth";
 
 export default function Header() {
   const [showLoginForm, setShowLoginForm] = useState<boolean>(false);
