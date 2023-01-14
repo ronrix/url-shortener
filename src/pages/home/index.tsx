@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <div className="mt-14 w-100 desktop:w-large max-w-large desktop:px-20 mx-auto ">
+      <div className="mt-14 w-100 xl:w-large max-w-large xl:px-20 mx-auto">
         <MainSection />
 
         <section className="my-32 flex justify-center items-center">

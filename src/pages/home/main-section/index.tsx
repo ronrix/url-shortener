@@ -3,11 +3,7 @@ import React, { useState, useEffect } from "react";
 import Left from "./Left";
 import BigWindow from "./BigWindow";
 import SmallWindow from "./SmallWindow";
-import {
-  sample_short_version_of_urls,
-  windows_data,
-  sample_base_url,
-} from "../../../config/data";
+import { windows_data, sample_base_url } from "../../../config/data";
 
 export default function MainSection() {
   const [index, setIndex] = useState<number>(0);
@@ -49,7 +45,7 @@ export default function MainSection() {
   }, [index]);
 
   return (
-    <div className="flex flex-col desktop:flex-row items-center md:items-start">
+    <div className="flex flex-col desktop:flex-row items-center md:items-start overflow-hidden">
       <Left />
 
       <section className="p-5 relative after:content-[''] after:absolute after:w-500 after:h-500 h-500 after:left-0 after:bottom-0 after:-top-0 after:right-0 after:border after:border-light-gray after:rounded-full after:-z-10">
