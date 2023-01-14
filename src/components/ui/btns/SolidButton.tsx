@@ -1,4 +1,6 @@
 import React from "react";
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 
 type Props = {
   text: string;
@@ -6,14 +8,16 @@ type Props = {
 };
 
 export default function SolidButton({ text, style }: Props) {
+  const navigate = useNavigate();
   return (
     <div className={style}>
-      <a
-        href="/register"
-        className="bg-secondary-black p-3 text-white font-bold rounded hover:bg-primary-black"
+      <motion.div
+        custom={Link}
+        onClick={() => navigate("/register")}
+        className="bg-secondary-black p-3 text-white font-bold rounded hover:bg-primary-black inline-block"
       >
         {text}
-      </a>
+      </motion.div>
     </div>
   );
 }
