@@ -22,12 +22,12 @@ export default function Section() {
   }, [index]);
 
   return (
-    <section className="flex bg-grayish rounded-lg p-14 shadow items-start justify-between">
+    <section className="flex flex-col md:flex-row bg-grayish rounded-lg p-14 shadow items-start justify-between">
       <div className="flex-1">
         <img src={imgs[index]} alt="websites" className="w-700 rounded-lg" />
       </div>
 
-      <div className="flex-1 ml-20">
+      <div className="flex-1 md:ml-20 mt-10 md:mt-0">
         <h2 className="font-bold text-5xl mb-8">Easy Access</h2>
         <p className="leading-relaxed text-grays">
           You can auto generate the short url or you can also customize your own
