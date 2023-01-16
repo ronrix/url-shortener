@@ -1,18 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import Register from "./pages/register/index";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import App from "./App";
+import "./index.css";
+import Register from "./pages/register/index";
+import NotFound from "./errors/NotFound";
+import Dashboard from "./pages/dashboard";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <NotFound />,
   },
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    errorElement: <NotFound />,
   },
 ]);
 
