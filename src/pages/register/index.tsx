@@ -52,6 +52,7 @@ export default function Register() {
             {...register("password", { required: true, minLength: 8 })}
             className="border p-3 m-2 bg-slate-100 focus:bg-white rounded-3xl"
             placeholder="Password"
+            type={"password"}
             id="password"
           />
           {errors.password && (
