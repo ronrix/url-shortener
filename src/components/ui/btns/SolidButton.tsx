@@ -14,7 +14,7 @@ export default function SolidButton({ text, style }: Props) {
       <motion.div
         custom={Link}
         onClick={() => navigate("/register")}
-        className="bg-secondary-black p-3 text-white font-bold rounded hover:bg-primary-black inline-block"
+        className="bg-secondary-black p-3 text-white font-bold rounded hover:bg-primary-black inline-block cursor-pointer"
       >
         {text}
       </motion.div>
