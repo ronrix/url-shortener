@@ -13,7 +13,7 @@ export default function Navs({ handleToggleAddCollectionModal }: Props) {
   }
   return (
     <div className="flex justify-between mt-5 items-center">
-      <div className="w-80 flex justify-between">
+      <div className="sm:w-80 flex justify-between">
         <Link
           to=""
           onClick={handleActiveNav}
@@ -30,7 +30,7 @@ export default function Navs({ handleToggleAddCollectionModal }: Props) {
           to="settings"
           onClick={handleActiveNav}
           id="settings"
-          className={`relative text-light-gray ${
+          className={`relative text-light-gray ml-5 md:ml-0 ${
             activeNav === "settings"
               ? "after:content=[''] after:absolute after:left-0 after:-bottom-2 after:w-5 after:h-1 after:bg-dark-green"
               : ""
