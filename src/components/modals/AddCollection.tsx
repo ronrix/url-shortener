@@ -15,7 +15,7 @@ export default function AddCollection({
   }
 
   return (
-    <div className="absolute w-100 h-100 top-0 left-0 right-0 bottom-0 bg-primary-black bg-opacity-60 flex items-center justify-center">
+    <div className="fixed w-100 h-100 top-0 left-0 right-0 bottom-0 bg-primary-black bg-opacity-60 flex items-center justify-center">
       <form
         className="w-320 rounded-lg bg-secondary-black text-white p-5 flex flex-col items-start"
         onSubmit={handleSubmit(onSubmit)}
