@@ -11,7 +11,7 @@ export default function Dashboard() {
     setShowAddModal((prev) => !prev);
   }
   return (
-    <div className="bg-primary-black h-screen">
+    <div className="bg-primary-black min-h-screen">
       <div className="container mx-auto">
         <Header />
 
