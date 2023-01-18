@@ -1,25 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 type Props = {
   handleToggleAddCollectionModal: () => void;
 };
 
 export default function Navs({ handleToggleAddCollectionModal }: Props) {
-  const [activeNav, setActiveNav] = useState<string>("collections");
+  const { pathname } = useLocation();
 
-  function handleActiveNav(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
-    setActiveNav(e.currentTarget.id);
-  }
   return (
     <div className="flex justify-between mt-5 items-center">
       <div className="sm:w-80 flex justify-between">
         <Link
           to=""
-          onClick={handleActiveNav}
           id="collections"
           className={`relative text-light-gray ${
-            activeNav === "collections"
+            pathname === "/dashboard"
               ? "after:content=[''] after:absolute after:left-0 after:-bottom-2 after:w-5 after:h-1 after:bg-dark-green"
               : ""
           }`}
@@ -28,10 +24,9 @@ export default function Navs({ handleToggleAddCollectionModal }: Props) {
         </Link>
         <Link
           to="settings"
-          onClick={handleActiveNav}
           id="settings"
           className={`relative text-light-gray ml-5 md:ml-0 ${
-            activeNav === "settings"
+            pathname === "/dashboard/settings"
               ? "after:content=[''] after:absolute after:left-0 after:-bottom-2 after:w-5 after:h-1 after:bg-dark-green"
               : ""
           }`}
