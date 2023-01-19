@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 export default function Register() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<{
+    msg: string;
+    note: string;
+    error: boolean;
+  }>({
+    msg: "Seems like there's an error trying to login with your google account",
+    note: "Please try again or try to login with other accont.",
+    error: false,
+  });
   const {
     register,
     handleSubmit,
@@ -12,12 +23,34 @@ export default function Register() {
   const navigate = useNavigate();
 
   return (
-    <GoogleOAuthProvider clientId="1096949201057-qfkcdtmiie2tjnu46bstgca4otu93snk.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="926950853129-r0lvuk9cs0nhdhq13bk4jomkcchelcni.apps.googleusercontent.com">
       <div className="h-screen w-full max-w-500 flex items-center justify-center relative">
         <form
-          onSubmit={handleSubmit((data) => {
-            console.log(data);
-            navigate("/dashboard");
+          onSubmit={handleSubmit(async (data: any) => {
+            setIsLoading(true);
+
+            await fetch("http://localhost:8000/login", {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            })
+              .then((res) => res.json())
+              .then((token) => {
+                // store token to localStorage
+                console.log(token);
+
+                // this adds some time for the loading animation show
+                setTimeout(() => {
+                  setIsLoading(false);
+                  navigate("/dashboard");
+                }, 1000);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           })}
           className="flex flex-col text-center m-8 w-300 shadow-lg p-5 rounded border"
         >
@@ -25,11 +58,27 @@ export default function Register() {
 
           <div className="mx-auto mb-5">
             <GoogleLogin
-              onSuccess={(credentialRespone) => {
-                console.log(credentialRespone);
+              onSuccess={async ({ credential }) => {
+                const decoded: any = jwtDecode(credential as string);
+
+                await fetch("http://localhost:8000/login", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    email: decoded.email,
+                    password: decoded.jti,
+                  }),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  credentials: "include",
+                });
               }}
               onError={() => {
                 console.log("Login Failed!");
+                setErrorMsg({
+                  ...errorMsg,
+                  error: true,
+                });
               }}
             />
           </div>
@@ -60,11 +109,26 @@ export default function Register() {
               Password is required.
             </p>
           )}
-          <input
+          <button
             type="submit"
-            className="m-2 bg-sky-500 hover:bg-sky-700 font-bold p-3 text-white rounded-3xl"
-            value="Sign in"
-          />
+            className="m-2 bg-sky-500 hover:bg-sky-700 font-bold p-3 rounded-3xl "
+          >
+            {isLoading ? (
+              <img
+                src="../../src/assets/loading.gif"
+                alt="loading gif"
+                className="w-5 mx-auto"
+              />
+            ) : (
+              <span className="text-white">Sign in</span>
+            )}
+          </button>
+          {errorMsg.error && (
+            <>
+              <p className="text-red-500 text-sm">{errorMsg.msg}</p>
+              <p className="text-red-500 text-sm">{errorMsg.note}</p>
+            </>
+          )}
           <span className="text-sm">
             Forgot password?
             <a href="/forgot-password" className="text-blue-400 ml-2">
