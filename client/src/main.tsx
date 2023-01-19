@@ -17,6 +17,10 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
   },
   {
+    path: "/login",
+    element: <Register />,
+  },
+  {
     path: "/register",
     element: <Register />,
   },
