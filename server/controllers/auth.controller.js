@@ -15,24 +15,24 @@ class AuthController {
 			
 			const token = generateAccessToken(data, { expiresIn: '1min'});
 			res.cookie("token", token);
-			res.json({ status: 200, msg: "Successfully Login" });
+			res.status(200).json({ msg: "Successfully Login", status: 200 });
 
 		}).catch(err => {
-			res.json({ status: 404, msg: err });
+			res.status(err.status).json(err);
 		});
 	}
 
 	register = (req, res) => {
 		const fields = req.body;
 
-		this.auth.login(fields).then(data => {
+		this.auth.register(fields).then(data => {
 
 			const token = generateAccessToken(data, { expiresIn: '1min'});
 			res.cookie("token", token);
-			res.json({ status: 200, msg: "Successfully Registered" });
+			res.status(200).json({ msg: "Successfully Registered", status: 200 });
 
 		}).catch(err => {
-			res.json({ status: 404, msg: err });
+			res.status(err.status).json(err);
 		});
 	}
 
