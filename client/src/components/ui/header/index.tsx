@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 
-import Auth from "../../auth/Auth";
-
 export default function Header() {
-  const [showLoginForm, setShowLoginForm] = useState<boolean>(false);
   const navigate = useNavigate();
 
   return (
@@ -25,7 +22,7 @@ export default function Header() {
       </div>
       <motion.div
         custom={Link}
-        onClick={() => navigate("/register")}
+        onClick={() => navigate("/login")}
         whileHover={{
           y: -1.2,
           transition: { duration: 0.3, ease: "easeIn" },
