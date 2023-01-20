@@ -19,6 +19,7 @@ export default function Login() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ export default function Login() {
         if (data.status === 200) {
           navigate("/dashboard");
         } else {
+          reset({ password: "" });
           setErrorMsg({ ...errorMsg, msg: data.msg, error: true });
         }
       })
