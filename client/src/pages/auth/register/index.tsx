@@ -37,6 +37,7 @@ export default function Register() {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         // this adds some time for the loading animation show
         setTimeout(() => {
           setIsLoading(false);
@@ -46,7 +47,7 @@ export default function Register() {
           navigate("/dashboard");
         } else {
           reset({ password: "" });
-          setErrorMsg(data.msg);
+          setErrorMsg({ msg: data.msg, error: true });
         }
       })
       .catch((err) => {
