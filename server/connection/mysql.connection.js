@@ -31,7 +31,8 @@ class Connection {
 		return mysql.format(query, Object.values(fields));
 	}
 	
-	_query(query, fields = []) {
+	// this query returns true or false if data exists
+	_exists(query, fields = []) {
 
 		query = this.format_query(query, fields);
 		// set the query to the profiler
@@ -39,16 +40,15 @@ class Connection {
 
 		return new Promise((resolve, reject) => {
 			this.connection.query(query, (err, result) => {
-
 				if(err) {
 					throw err;
 				}
 
 				if(result.length === 0) {
-					reject("No user found!");
+					resolve(false);
 				}
 				else {
-					resolve(result);
+					resolve(true);
 				}
 			});
 		});
