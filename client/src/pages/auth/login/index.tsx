@@ -11,11 +11,9 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<{
     msg: string;
-    note: string;
     error: boolean;
   }>({
-    msg: "Seems like there's an error trying to login with your google account",
-    note: "Please try again or try to login with other accont.",
+    msg: "",
     error: false,
   });
   const {
@@ -37,15 +35,17 @@ export default function Login() {
       credentials: "include",
     })
       .then((res) => res.json())
-      .then((token) => {
-        // store token to localStorage
-        console.log(token);
-
+      .then((data) => {
         // this adds some time for the loading animation show
         setTimeout(() => {
           setIsLoading(false);
-          navigate("/dashboard");
         }, 1000);
+
+        if (data.status === 200) {
+          navigate("/dashboard");
+        } else {
+          setErrorMsg({ ...errorMsg, msg: data.msg, error: true });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -55,7 +55,7 @@ export default function Login() {
   function handleErrMsg() {
     console.log("Login Failed!");
     setErrorMsg({
-      ...errorMsg,
+      msg: "Something went wrong connecting your google account. Please try again",
       error: true,
     });
   }
@@ -75,6 +75,14 @@ export default function Login() {
             className="relative w-100 bg-grayish mb-5 after:content-['OR'] after:absolute after:left-50 after:bg-white after:text-primary-black after:text-xs"
             style={{ height: "2px" }}
           ></div>
+
+          {/* error response */}
+          {errorMsg.error && (
+            <div className="text-sm text-grayish bg-red-400 p-2 rounded-lg">
+              <i className="fa-solid fa-circle-exclamation text-grayish text-sm mr-3"></i>
+              {errorMsg.msg}
+            </div>
+          )}
 
           {/* inputs */}
           <Input
@@ -102,13 +110,6 @@ export default function Login() {
           </a>
 
           <SubmitBtn text="Sign in" isLoading={isLoading} />
-
-          {errorMsg.error && (
-            <>
-              <p className="text-red-500 text-sm">{errorMsg.msg}</p>
-              <p className="text-red-500 text-sm">{errorMsg.note}</p>
-            </>
-          )}
 
           <span className="text-sm mt-5">
             Don't have an account yet?
