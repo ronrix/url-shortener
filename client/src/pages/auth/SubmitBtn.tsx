@@ -9,7 +9,10 @@ export default function SubmitBtn({ isLoading, text }: Props) {
   return (
     <button
       type="submit"
-      className="m-2 bg-sky-500 hover:bg-sky-700 font-bold p-3 rounded-3xl "
+      className={`m-2 bg-sky-500 ${
+        !isLoading && "hover:bg-sky-700"
+      } font-bold p-3 rounded-3xl`}
+      disabled={isLoading}
     >
       {isLoading ? (
         <img
