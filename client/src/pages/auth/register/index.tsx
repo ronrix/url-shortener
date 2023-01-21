@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import Input from "../Input";
 import GoogleAuth from "../GoogleAuth";
 import SubmitBtn from "../SubmitBtn";
+
+import { authSchema } from "../schema";
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,38 +24,41 @@ export default function Register() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: yupResolver(authSchema) });
+
   const navigate = useNavigate();
 
   async function onSubmit(data: any) {
     setIsLoading(true);
 
-    await fetch("http://localhost:8000/register", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        // this adds some time for the loading animation show
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1000);
-
-        if (data.status === 200) {
-          navigate("/dashboard");
-        } else {
-          reset({ password: "" });
-          setErrorMsg({ msg: data.msg, error: true });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const response = await fetch("http://localhost:8000/register", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
       });
+
+      const responseData: { msg: string; status: number } =
+        await response.json();
+      if (responseData.status === 200) {
+        setIsLoading(false);
+        navigate("/dashboard");
+      } else {
+        console.log(responseData);
+        setIsLoading(false);
+        reset({ password: "" });
+        setErrorMsg({ msg: responseData.msg, error: true });
+      }
+    } catch (err) {
+      setErrorMsg({
+        msg: "Oh no! Something went wrong trying to connect with the server. Please try again.",
+        error: true,
+      });
+      setIsLoading(false);
+    }
   }
 
   function handleErrMsg() {
@@ -68,7 +74,7 @@ export default function Register() {
       <div className="h-screen w-full max-w-500 flex items-center justify-center relative">
         <form
           onSubmit={handleSubmit((data) => onSubmit(data))}
-          className="flex flex-col text-center m-8 w-300 shadow-lg p-5 rounded border"
+          className="flex flex-col text-center m-8 max-w-320 w-320 shadow-lg p-5 rounded border relative"
         >
           <h4 className="text-2xl font-bold mb-8">Sign Up</h4>
           <GoogleAuth handleErrMsg={handleErrMsg} />
@@ -81,7 +87,7 @@ export default function Register() {
 
           {/* error response */}
           {errorMsg.error && (
-            <div className="text-sm text-grayish bg-red-400 p-2 rounded-lg">
+            <div className="text-xs text-grayish bg-red-400 p-2 rounded-lg w-full">
               <i className="fa-solid fa-circle-exclamation text-grayish text-sm mr-3"></i>
               {errorMsg.msg}
             </div>
@@ -90,18 +96,14 @@ export default function Register() {
           {/* inputs */}
           <Input
             name="username"
-            required={{ required: true }}
             placeholder="Username"
-            errorMsg="Username is require"
-            error={errors.username}
+            error={errors?.username?.message}
             register={register}
           />
           <Input
             name="password"
-            required={{ required: true, minLength: 8 }}
             placeholder="Password"
-            errorMsg="Password is required"
-            error={errors.password}
+            error={errors?.password?.message}
             type="password"
             register={register}
           />
