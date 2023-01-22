@@ -12,7 +12,7 @@ class AuthModel extends Connection {
         this.FormValidation = new FormValidation();
 	}
 	
-	async login(fields) {
+	login(fields) {
 
 		// add form validation here
 		if(this.FormValidation.is_empty(fields)) {
