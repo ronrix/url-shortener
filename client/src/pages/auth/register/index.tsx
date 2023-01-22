@@ -8,7 +8,7 @@ import Input from "../Input";
 import GoogleAuth from "../GoogleAuth";
 import SubmitBtn from "../SubmitBtn";
 
-import { authSchema } from "../schema";
+import { registerSchema } from "../schema";
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,7 +24,7 @@ export default function Register() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(authSchema) });
+  } = useForm({ resolver: yupResolver(registerSchema) });
 
   const navigate = useNavigate();
 

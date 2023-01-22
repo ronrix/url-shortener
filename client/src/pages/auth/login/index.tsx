@@ -8,7 +8,7 @@ import Input from "../Input";
 import GoogleAuth from "../GoogleAuth";
 import SubmitBtn from "../SubmitBtn";
 
-import { authSchema } from "../schema";
+import { loginSchema } from "../schema";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,7 +24,7 @@ export default function Login() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(authSchema) });
+  } = useForm({ resolver: yupResolver(loginSchema) });
 
   const navigate = useNavigate();
 
