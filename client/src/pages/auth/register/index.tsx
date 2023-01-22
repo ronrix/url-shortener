@@ -101,9 +101,22 @@ export default function Register() {
             register={register}
           />
           <Input
+            name="email"
+            placeholder="Email Address"
+            error={errors?.email?.message}
+            register={register}
+          />
+          <Input
             name="password"
             placeholder="Password"
             error={errors?.password?.message}
+            type="password"
+            register={register}
+          />
+          <Input
+            name="confirm_password"
+            placeholder="Confirm Password"
+            error={errors?.confirm_password?.message}
             type="password"
             register={register}
           />
