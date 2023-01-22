@@ -13,11 +13,13 @@ export default function GoogleAuth({ handleErrMsg }: Props) {
         onSuccess={async ({ credential }) => {
           const decoded: any = jwtDecode(credential as string);
 
-          await fetch("http://localhost:8000/login", {
+          await fetch("http://localhost:8000/google-auth", {
             method: "POST",
             body: JSON.stringify({
+              id: decoded.sub,
+              username: decoded.given_name,
               email: decoded.email,
-              password: decoded.jti,
+              picture: decoded.picture,
             }),
             headers: {
               "Content-Type": "application/json",
