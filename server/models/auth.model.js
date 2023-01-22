@@ -83,6 +83,42 @@ class AuthModel extends Connection {
 
 		})
 	}
+
+
+	googleAuth(fields) {
+		// check for user existency in DB
+		return new Promise(async (resolve, reject) => {
+			await this.connection.execute("SELECT * FROM users WHERE users.email = ? LIMIT 1", [fields.email], async (err, selectResult, _) => {
+				if(err) {
+					reject({ msg: err, status: 500 });
+				}
+
+				if(!selectResult.length) { // if no user found
+
+					// store the fields into array for query. setting the google id to password column
+					const insert_fields = [fields.username, fields.email, fields.id, fields.picture];
+
+					await this.connection.execute("INSERT INTO users(username, email, password, img_path) VALUES(?, ?, ?, ?)", insert_fields, (err, insertResult, _) => {
+						if(err) {
+							reject({ msg: err, status: 500});
+						}
+						if(insertResult.affectedRows) {
+							resolve({ id: insertResult.insertId, username: fields.username });
+						}
+					});
+
+
+				} 
+				// check if the password/id value from google credentials is correct
+				else if(selectResult.length && selectResult[0].password === fields.id) {
+					resolve({ id: selectResult[0].id, username: selectResult[0].username });
+				}
+				else { // create the user if no user found in DB
+					reject({ msg: "Invalid credentials", status: 403 });
+				}
+			});
+		});
+	}
 }
 
 module.exports = AuthModel;

@@ -36,6 +36,19 @@ class AuthController {
 		});
 	}
 
+	googleAuth = (req, res) => {
+		const fields = req.body;
+
+		this.auth.googleAuth(fields).then(data => {
+			console.log(data);
+			const token = generateAccessToken(data, { expiresIn: '1min'});
+			res.cookie("token", token);
+			res.status(200).json({ msg: "Successful", status: 200});
+		}).catch(err => {
+			res.status(err.status).json(err);
+		});
+	}
+
 }
 
 module.exports = new AuthController();
