@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
@@ -68,6 +68,23 @@ export default function Register() {
       error: true,
     });
   }
+
+  useEffect(() => {
+    fetch("http://localhost:8000/check-auth", {
+      method: "GET",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then(({ status }) => {
+        if (status === 200) {
+          navigate("/dashboard");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <GoogleOAuthProvider clientId="926950853129-r0lvuk9cs0nhdhq13bk4jomkcchelcni.apps.googleusercontent.com">
