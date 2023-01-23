@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import AddCollection from "../../components/modals/AddCollection";
+import { CollectionContext } from "../../context/collection";
 import Header from "./header";
 import Navs from "./navs";
 
@@ -27,10 +28,21 @@ export default function Dashboard() {
       credentials: "include",
     })
       .then((res) => res.json())
-      .then(({ data, status }) => {
+      .then(async ({ data, status }) => {
         setIsLoading(false);
         if (status === 200) {
           setUserInfo(data[0]);
+        }
+
+        return fetch("http://localhost:8000/get-collections", {
+          method: "GET",
+          credentials: "include",
+        });
+      })
+      .then((res) => res.json())
+      .then(({ data }) => {
+        if (data.length) {
+          setCollection(data);
         }
       })
       .catch(() => {
@@ -63,7 +75,9 @@ export default function Dashboard() {
                 handleToggleAddCollectionModal={handleToggleAddCollectionModal}
               />
               <div className="mt-10">
-                <Outlet />
+                <CollectionContext.Provider value={collection}>
+                  <Outlet />
+                </CollectionContext.Provider>
               </div>
             </div>
 
