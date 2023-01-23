@@ -49,6 +49,22 @@ class AuthController {
 		});
 	}
 
+	isAuthenticated = (req, res) => {
+		const user = req.user;
+		this.auth.isUserExist(user).then(exist => {
+			console.log("exists: ", exist);
+			if(exist) {
+				res.status(200).json({ msg: "Authenticated", status: 200});
+			}
+			else {
+				res.status(404).json({ msg: "User not found", status: 404 });
+			}
+
+		}).catch(err => {
+			res.status(500).json(err);
+		});
+	}
+
 }
 
 module.exports = new AuthController();

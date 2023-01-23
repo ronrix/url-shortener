@@ -117,6 +117,14 @@ class AuthModel {
 			});
 		});
 	}
+
+	async isUserExist(user) {
+		const user_found = await this.conn._exists("SELECT id FROM users WHERE users.id = ?", [user.id]);
+		if(user_found) {
+			return true;
+		}
+		return false;
+	}
 }
 
 module.exports = AuthModel;
