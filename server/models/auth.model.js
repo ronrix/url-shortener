@@ -2,8 +2,6 @@
 const Connection = require("../connection/mysql.connection");
 const FormValidation = require("../modules/validation/Validation");
 const bcryt = require("bcrypt");
-const { resourceLimits } = require("worker_threads");
-const { resolve } = require("path");
 const salt = 10;
 
 class AuthModel {
@@ -69,9 +67,9 @@ class AuthModel {
 		// create new user if user is valid
 		return new Promise(async (resolve, reject) => {
 			await this.conn.connection.execute(`
-				INSERT INTO users(username, password) 
-				VALUES(?, ?)`, 
-				[fields.username, hashed_password], function(err, result, _) {
+				INSERT INTO users(username, email, password) 
+				VALUES(?, ?, ?)`, 
+				[fields.username, fields.email, hashed_password], function(err, result, _) {
 					if(err) {
 						reject({msg: err, status: 500});
 					}
