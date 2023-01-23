@@ -21,34 +21,51 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
+    // check if user is authenticated
+    if (isLoading) {
+      fetch("http://localhost:8000/check-auth", {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then(({ status }) => {
+          if (status === 200) {
+            setIsLoading(false);
+          } else {
+            navigate("/login");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+
     // fetch all the url collections
     // set the loading to false after getting and passing all the requirements to request to a protected route
-    fetch("http://localhost:8000/dashboard", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then(async ({ data, status }) => {
-        setIsLoading(false);
-        if (status === 200) {
-          setUserInfo(data[0]);
-        }
+    if (!isLoading) {
+      fetch("http://localhost:8000/dashboard", {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then(async ({ data, status }) => {
+          if (status === 200) {
+            setUserInfo(data[0]);
+          }
 
-        return fetch("http://localhost:8000/get-collections", {
-          method: "GET",
-          credentials: "include",
+          return fetch("http://localhost:8000/get-collections", {
+            method: "GET",
+            credentials: "include",
+          });
+        })
+        .then((res) => res.json())
+        .then(({ data, status }) => {
+          if (status === 200) {
+            setCollection(data);
+          }
+        })
+        .catch(() => {
+          navigate("/login");
         });
-      })
-      .then((res) => res.json())
-      .then(({ data, status }) => {
-        if (status === 200) {
-          setCollection(data);
-        }
-      })
-      .catch(() => {
-        setIsLoading(false);
-        navigate("/login");
-      });
+    }
   }, [isLoading]);
 
   return (
