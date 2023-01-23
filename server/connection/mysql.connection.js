@@ -55,4 +55,4 @@ class Connection {
 	}
 }
 
-module.exports = Connection;
+module.exports = new Connection();

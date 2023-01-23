@@ -6,9 +6,9 @@ const { resourceLimits } = require("worker_threads");
 const { resolve } = require("path");
 const salt = 10;
 
-class AuthModel extends Connection {
+class AuthModel {
 	constructor() {
-		super();
+		this.connection = Connection;
         this.FormValidation = new FormValidation();
 	}
 	
