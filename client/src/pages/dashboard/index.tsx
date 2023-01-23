@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import AddCollection from "../../components/modals/AddCollection";
-import { CollectionContext } from "../../context/collection";
+import { CollectionContext, ContextType } from "../../context/collection";
 import Header from "./header";
 import Navs from "./navs";
 
 export default function Dashboard() {
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [collection, setCollection] = useState<[]>([]);
+  const [collection, setCollection] = useState<ContextType>();
   const [userInfo, setUserInfo] = useState<{
     username: string;
     img_path: string;
@@ -40,8 +40,8 @@ export default function Dashboard() {
         });
       })
       .then((res) => res.json())
-      .then(({ data }) => {
-        if (data.length) {
+      .then(({ data, status }) => {
+        if (status === 200) {
           setCollection(data);
         }
       })

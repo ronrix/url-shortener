@@ -1,22 +1,25 @@
 import React, { useContext } from "react";
-import { Col } from "../../../config/collections";
-import { CollectionContext } from "../../../context/collection";
+import {
+  CollectionContext,
+  ContextType,
+  URL_COLLECTIONS_TYPE,
+} from "../../../context/collection";
 import Collection from "./Collection";
 
 export default function Collections() {
-  const collection = useContext(CollectionContext);
+  const collection = useContext<ContextType | undefined>(CollectionContext);
 
   return (
     <>
-      {collection.length ? (
+      {collection?.url_collections.length ? (
         <div className="text-white grid mobile:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2">
-          {collection.map((c: Col) => {
+          {collection?.url_collections.map((c: URL_COLLECTIONS_TYPE) => {
             return (
               <Collection
                 key={c.id}
-                collection_details={c.collection_details}
+                collection_details={c.details}
                 collection_image_path={c.img_url}
-                collection_name={c.collection_name}
+                collection_name={c.name}
               />
             );
           })}
