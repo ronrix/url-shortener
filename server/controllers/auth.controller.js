@@ -14,7 +14,7 @@ class AuthController {
 		this.auth.login(fields).then(data => {
 			
 			const token = generateAccessToken(data, { expiresIn: '1day'});
-			res.cookie("token", token);
+			res.cookie("token", token, { httpOnly: true });
 			res.status(200).json({ msg: "Successfully Login", status: 200 });
 
 		}).catch(err => {
@@ -28,7 +28,7 @@ class AuthController {
 		this.auth.register(fields).then(data => {
 
 			const token = generateAccessToken(data, { expiresIn: '1day'});
-			res.cookie("token", token);
+			res.cookie("token", token, { httpOnly: true });
 			res.status(200).json({ msg: "Successfully Registered", status: 200 });
 
 		}).catch(err => {
@@ -42,7 +42,7 @@ class AuthController {
 		this.auth.googleAuth(fields).then(data => {
 			console.log(data);
 			const token = generateAccessToken(data, { expiresIn: '1day'});
-			res.cookie("token", token);
+			res.cookie("token", token, { httpOnly: true });
 			res.status(200).json({ msg: "Successful", status: 200});
 		}).catch(err => {
 			res.status(err.status).json(err);
