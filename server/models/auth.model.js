@@ -8,7 +8,7 @@ const salt = 10;
 
 class AuthModel {
 	constructor() {
-		this.connection = Connection;
+		this.conn = Connection;
         this.FormValidation = new FormValidation();
 	}
 	
@@ -20,7 +20,7 @@ class AuthModel {
 		}
 
 		return new Promise(async (resolve, reject) => {
-			await this.connection.execute(`
+			await this.conn.connection.execute(`
 				SELECT *
 				FROM users
 				WHERE users.username = ? LIMIT 1`,
@@ -61,14 +61,14 @@ class AuthModel {
 		const hashed_password = await bcryt.hash(fields.password, salt);
 
 		// check if username is already used
-		const user_found = await this._exists("SELECT * FROM users WHERE users.username = ? LIMIT 1", [fields.username]);
+		const user_found = await this.conn._exists("SELECT * FROM users WHERE users.username = ? LIMIT 1", [fields.username]);
 		if(user_found) {
 			throw { msg: "User already exists", status: 409 };
 		}
 
 		// create new user if user is valid
 		return new Promise(async (resolve, reject) => {
-			await this.connection.execute(`
+			await this.conn.connection.execute(`
 				INSERT INTO users(username, password) 
 				VALUES(?, ?)`, 
 				[fields.username, hashed_password], function(err, result, _) {
@@ -88,7 +88,7 @@ class AuthModel {
 	googleAuth(fields) {
 		// check for user existency in DB
 		return new Promise(async (resolve, reject) => {
-			await this.connection.execute("SELECT * FROM users WHERE users.email = ? LIMIT 1", [fields.email], async (err, selectResult, _) => {
+			await this.conn.connection.execute("SELECT * FROM users WHERE users.email = ? LIMIT 1", [fields.email], async (err, selectResult, _) => {
 				if(err) {
 					reject({ msg: err, status: 500 });
 				}
@@ -98,7 +98,7 @@ class AuthModel {
 					// store the fields into array for query. setting the google id to password column
 					const insert_fields = [fields.username, fields.email, fields.id, fields.picture];
 
-					await this.connection.execute("INSERT INTO users(username, email, password, img_path) VALUES(?, ?, ?, ?)", insert_fields, (err, insertResult, _) => {
+					await this.conn.connection.execute("INSERT INTO users(username, email, password, img_path) VALUES(?, ?, ?, ?)", insert_fields, (err, insertResult, _) => {
 						if(err) {
 							reject({ msg: err, status: 500});
 						}
