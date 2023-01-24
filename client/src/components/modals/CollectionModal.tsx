@@ -18,11 +18,17 @@ export default function CollectionModal({ handleShowModal }: Props) {
       onClick={handleShowModal}
     >
       <div
-        className="w-full md:w-700 rounded-lg bg-secondary-black text-white p-5 flex flex-col md:flex-row"
+        className="w-full md:w-700 rounded-lg bg-secondary-black text-white p-5 flex flex-col md:flex-row relative"
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
+        {/* close btn | icon */}
+        <i
+          onClick={handleShowModal}
+          className="fa-solid fa-xmark text-grays text-sm absolute right-0 top-0 rounded-full p-2"
+        ></i>
+
         <div className="md:mr-5 flex-1">
           <img
             src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fd6f6d0kpz0gyr.cloudfront.net%2Fuploads%2Fimages%2F_1200x630_crop_center-center_82_none%2Ftailwind-thumb.jpg%3Fmtime%3D20210104144959%26focal%3Dnone%26tmtime%3D20210104145035&f=1&nofb=1&ipt=6802a1bdbfdf6f9a7af4bf1b250e5e39a81331e178c231839db35457770da71c&ipo=images"
