@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   CollectionContext,
   ContextType,
@@ -9,9 +9,21 @@ import Collection from "./Collection";
 export default function Collections() {
   const collection = useContext<ContextType | undefined>(CollectionContext);
 
+  useEffect(() => {
+    console.log(collection?.url_collections.length);
+  }, [collection]);
+
   return (
     <>
-      {collection?.url_collections.length ? (
+      {collection?.url_collections.length === undefined ? (
+        <div className="block flex justify-center">
+          <img
+            src="../../src/assets/loading.gif"
+            alt="loading animation"
+            className="w-14"
+          />
+        </div>
+      ) : collection?.url_collections.length ? (
         <div className="text-white grid mobile:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2">
           {collection?.url_collections.map((c: URL_COLLECTIONS_TYPE) => {
             return (
