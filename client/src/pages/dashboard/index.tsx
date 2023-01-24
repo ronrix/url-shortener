@@ -35,7 +35,10 @@ export default function Dashboard() {
             navigate("/login");
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          navigate("/login");
+        });
     }
 
     // fetch all the url collections
