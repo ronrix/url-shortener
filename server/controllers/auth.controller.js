@@ -65,6 +65,11 @@ class AuthController {
 		});
 	}
 
+	signOut = (req, res) => {
+		res.clearCookie("token");
+		res.status(200).json({ msg: "Successfuly sign out", status: 200 });
+	}
+
 }
 
 module.exports = new AuthController();
