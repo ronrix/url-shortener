@@ -65,14 +65,6 @@ export default function AddCollection({
             className="rounded w-full p-2 text-primary-black block outline-none"
           />
         </label>
-        {/* <label className="text-white my-2 w-full">
-          Short URL <span className="text-grayish text-xs">(optional)</span>
-          <p className="text-grays mb-2 text-xs">Add your own short url</p>
-          <input
-            {...register("prefix", { required: true })}
-            className="rounded w-full p-2 text-primary-black block outline-none"
-          /> 
-        </label>*/}
         <div className="w-full mt-3">
           <button
             type="button"
