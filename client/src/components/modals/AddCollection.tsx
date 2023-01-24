@@ -11,7 +11,32 @@ export default function AddCollection({
   const { register, handleSubmit } = useForm();
 
   function onSubmit() {
+    fetch("http://localhost:8000/save-collection", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+
     console.log("submitting...");
+  }
+
+  function generateShortUrl() {
+    fetch("http://localhost:8000/generate-short-url", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then(({ generatedUrl, status }) => {
+        if (status === 200) {
+          console.log(generatedUrl);
+        }
+      })
+      .catch((err) => console.log(err));
+    console.log("generating...");
   }
 
   return (
@@ -20,24 +45,30 @@ export default function AddCollection({
         className="w-320 rounded-lg bg-secondary-black text-white p-5 flex flex-col items-start"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="text-lg text-white font-bold">New Collection</div>
+        <div className="text-lg text-white font-bold">
+          Create New Collection
+        </div>
         <label className="text-white my-2 w-full">
           Original URL
+          <p className="text-grays mb-2 text-xs">
+            paste the url you want to be shorten
+          </p>
           <input
             {...register("original_url", { required: true })}
             className="rounded w-full p-2 text-primary-black block outline-none"
           />
         </label>
         <label className="text-white my-2 w-full">
-          Prefix
+          Short URL <span className="text-grayish text-xs">(optional)</span>
+          <p className="text-grays mb-2 text-xs">Add your own short url</p>
           <input
             {...register("prefix", { required: true })}
-            className="rounded w-full p-2 text-primary-black block"
+            className="rounded w-full p-2 text-primary-black block outline-none"
           />
         </label>
         <div className="w-full mt-3">
           <button
-            onClick={() => console.log("generating...")}
+            onClick={generateShortUrl}
             className="bg-light-gray p-2 rounded"
           >
             Generate
