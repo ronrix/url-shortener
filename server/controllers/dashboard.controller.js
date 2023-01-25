@@ -1,5 +1,8 @@
 const DashboardModel = require("../models/dashboard.model");
 const randomstring  = require("randomstring");
+const path = require("path");
+
+const generateScreenshot = require("../modules/functions/generateScreenshot");
 
 class DashboardController {
     constructor() {
@@ -35,6 +38,26 @@ class DashboardController {
             console.log(err)
             res.status(500).json({ msg: "Something went wrong generating short url", status: 500 });
         }
+    }
+
+    saveCollection = (req, res) => {
+        const fields = req.body;
+        const user = req.user;
+
+        // get the domain name of the given website
+        const url =  new URL(fields.originalUrl);
+        const domain_name = url.hostname;
+        const pathname = path.join(__dirname, "../", 'images/');
+
+        // genereate given website screenshot
+        generateScreenshot(fields.originalUrl, pathname, domain_name, user.username)
+        .then(() => {
+            console.log("Screenshot generated successfully");
+        })
+        .catch(err => {
+            console.log("Error gnenerating screenshot: ", err);
+            res.status(500).json({ msg: err, status: 500 });
+        })
     }
 }
 
