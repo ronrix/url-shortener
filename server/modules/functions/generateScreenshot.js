@@ -20,7 +20,6 @@ module.exports = async function generateScreenshot(url, pathname, domain_name) {
     await page.goto(url);
     await page.screenshot({
         path: pathname + domain_name + ".png",
-        fullPage: true,
     });
     await browser.close();
 }
