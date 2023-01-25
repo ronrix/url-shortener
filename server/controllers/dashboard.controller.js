@@ -47,12 +47,22 @@ class DashboardController {
         // get the domain name of the given website
         const url =  new URL(fields.originalUrl);
         const domain_name = url.hostname;
-        const pathname = path.join(__dirname, "../", 'images/');
+        const pathname = path.join(__dirname, "../", `images/${user.username}/`);
 
         // genereate given website screenshot
-        generateScreenshot(fields.originalUrl, pathname, domain_name, user.username)
+        generateScreenshot(fields.originalUrl, pathname, domain_name)
         .then(() => {
-            console.log("Screenshot generated successfully");
+            
+            this.dashboard.saveCollection(fields, pathname, user)
+            .then(data => {
+                console.log(data);
+                res.status(200).json({ msg: "Successlly saved the collection", status: 200 });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({ msg: err, status: 500 });
+            });
+
         })
         .catch(err => {
             console.log("Error gnenerating screenshot: ", err);
