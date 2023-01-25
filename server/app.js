@@ -4,7 +4,9 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(cookieParser());
 app.use(bodyParser.json({ extended: true })); // for now (install body-parser)
 // including all route files (DON'T CHANGE THIS)
