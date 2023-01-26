@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { addCollectionSchema } from "../../config/schema";
 import Input from "../ui/inputs/Input";
@@ -16,15 +16,16 @@ export default function AddCollection({
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting, errors },
+    formState: { errors },
   } = useForm({
     resolver: yupResolver(addCollectionSchema),
   });
   const [showNotif, setShowNotif] = useState<boolean>(false);
   const [resMsg, setResMsg] = useState<{ msg: string; status: number }>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   function onSubmit(data: any) {
-    console.log("submitting");
+    setIsLoading(true);
 
     fetch("http://localhost:8000/save-collection", {
       method: "POST",
@@ -49,6 +50,7 @@ export default function AddCollection({
 
         if (data.status === 200) {
           setResMsg(data);
+          setIsLoading(false);
           reset();
         }
         setResMsg(data);
@@ -106,21 +108,33 @@ export default function AddCollection({
             <p className="text-red-600 text-left text-xs m-2 mt-0">{`${errors.details.message}`}</p>
           )}
         </label>
-        <div className="text-white self-end mt-5">
+        <div className="flex text-white self-end mt-5">
           <button
             type="button"
             onClick={handleToggleAddCollectionModal}
-            className="text-sm text-grayish cursor-pointer"
-            disabled={isSubmitting}
+            className={`text-sm ${
+              isLoading ? "text-grays" : "text-grayish"
+            } cursor-pointer `}
+            disabled={isLoading}
           >
             Cancel
           </button>
-          <input
+          <button
             type="submit"
-            value="Save"
-            className="bg-dark-green p-2 rounded ml-5 cursor-pointer"
-            disabled={isSubmitting}
-          />
+            className={`${
+              isLoading ? "bg-grays" : "bg-dark-green"
+            } p-2 rounded ml-5 cursor-pointer flex items-center`}
+            disabled={isLoading}
+          >
+            {isLoading && (
+              <img
+                src={"../../src/assets/loading.gif"}
+                alt="loading animation"
+                className="w-5 mr-2"
+              />
+            )}
+            Save
+          </button>
         </div>
       </form>
     </div>
