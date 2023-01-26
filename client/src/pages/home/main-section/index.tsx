@@ -45,7 +45,7 @@ export default function MainSection() {
   }, [index]);
 
   return (
-    <div className="flex flex-col desktop:flex-row items-center md:items-start overflow-hidden">
+    <div className="flex flex-col desktop:flex-row items-center md:items-start">
       <Left />
 
       <section className="p-5 relative after:content-[''] after:absolute after:w-500 after:h-500 h-500 after:left-0 after:bottom-0 after:-top-0 after:right-0 after:border after:border-light-gray after:rounded-full after:-z-10">
