@@ -21,61 +21,41 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    // check if user is authenticated
-    if (isLoading) {
-      fetch("http://localhost:8000/check-auth", {
-        method: "GET",
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then(({ status }) => {
-          if (status === 200) {
-            setIsLoading(false);
-          } else {
-            navigate("/login");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          navigate("/login");
-        });
-    }
-
     // fetch all the url collections
     // set the loading to false after getting and passing all the requirements to request to a protected route
-    if (!isLoading) {
-      fetch("http://localhost:8000/dashboard", {
-        method: "GET",
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then(async ({ data, status }) => {
-          if (status === 200) {
-            setUserInfo(data[0]);
-          }
+    fetch("http://localhost:8000/dashboard", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then(async ({ data, status }) => {
+        if (status === 200) {
+          setUserInfo(data[0]);
+        }
 
-          return fetch("http://localhost:8000/get-collections", {
-            method: "GET",
-            credentials: "include",
-          });
-        })
-        .then((res) => res.json())
-        .then(({ data, status, base_url }) => {
-          // add the base_url to the data collection for rendering
-          // add base_url only if data is not null
-          if (data) {
-            data["base_url"] = base_url;
-          }
-
-          if (status === 200) {
-            setCollection(data);
-          }
-        })
-        .catch(() => {
-          navigate("/login");
+        return fetch("http://localhost:8000/get-collections", {
+          method: "GET",
+          credentials: "include",
         });
-    }
-  }, [isLoading, showAddModal]);
+      })
+      .then((res) => res.json())
+      .then(({ data, status, base_url }) => {
+        setIsLoading(false);
+        // add the base_url to the data collection for rendering
+        // add base_url only if data is not null
+        if (data) {
+          data["base_url"] = base_url;
+        }
+
+        if (status === 200) {
+          setCollection(data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/login");
+      });
+  }, [showAddModal]);
 
   return (
     <>
