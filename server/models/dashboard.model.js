@@ -69,10 +69,30 @@ class DashboardModel {
                         }
                         reject({ msg: "Failed to save the collection", status: 500 });
                     });
-                return;
             }
 
             // insert new collection if user has no collections yet
+            await this.conn.connection.execute(`
+                    INSERT INTO collections(user_id, url_collections) 
+                    VALUES (?, ?) `
+                    , [user.id, `
+                        [{\"id\": 1, 
+                        \"name\": \"${fields.name}\", 
+                        \"details\": \"${fields.details}\", 
+                        \"img_url\": \"${img_url}\",
+                        \"real_path\": \"${fields.originalUrl}\",
+                        \"short_path\": \"${generated_short_string.string}\"}]
+                    `],
+                    (err, result, _) => {
+                        if(err) {
+                            reject({ msg: err, status: 200 });
+                        }
+                        if(result.affectedRows) {
+                            resolve({ msg: "Successfully saved new collection", status: 200 });
+                        }
+                        reject({ msg: "Failed to save new collection", status: 500 });
+
+            });
 
         });
     }
