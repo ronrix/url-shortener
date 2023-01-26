@@ -30,8 +30,7 @@ class DashboardModel {
         })
     }
 
-    saveCollection(fields, img_url, user) {
-        console.log(user);
+    saveCollection(fields, img_url, user, generated_short_string) {
 
         if(this.formValidation.is_empty(fields)) {
             throw { msg: "Please fill up all the fields" ,status: 404 };
@@ -60,12 +59,15 @@ class DashboardModel {
                             'short_url', ?,
                             'created_at', ?,
                             'updated_at', ?))
-                    `, [user.id, user.id, fields.name, fields.details, img_url, fields.originalUrl, fields.shortUrl, new Date(), null], (err, result, _) => {
+                    `, [user.id, user.id, fields.name, fields.details, img_url, fields.originalUrl, generated_short_string.string, new Date(), null], (err, result, _) => {
                         if(err) {
                             reject({msg: err, status: 500});
                         }
 
-                        console.log(result);
+                        if(result.affectedRows) {
+                            resolve({ msg: "Successfully saved the collection", status: 200 });
+                        }
+                        reject({ msg: "Failed to save the collection", status: 500 });
                     });
                 return;
             }

@@ -6,7 +6,6 @@ const authenticateToken = require("../modules/middlewares/auth.middleware");
 
 router.get("/dashboard", [authenticateToken], DashboardController.index);
 router.get("/get-collections", [authenticateToken], DashboardController.getCollections);
-router.get("/generate-short-url", [authenticateToken], DashboardController.generatShortString);
 
 router.post("/save-collection", [authenticateToken], DashboardController.saveCollection);
 

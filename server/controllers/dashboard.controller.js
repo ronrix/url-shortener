@@ -1,6 +1,7 @@
 const DashboardModel = require("../models/dashboard.model");
 const randomstring  = require("randomstring");
 const path = require("path");
+const fs = require("fs");
 
 const generateScreenshot = require("../modules/functions/generateScreenshot");
 
@@ -26,23 +27,28 @@ class DashboardController {
         }).catch(err => res.status(err.status).json(err));
     }
 
-    generatShortString = (req, res) => {
-        const user = req.user;
-
+    #generatShortString = () => {
         /// generate short string t
+        let random_string = "";
         try {
-            const randomString = randomstring.generate(10);
-            console.log(randomString);
-            res.status(200).json({ generatedUrl: randomString, status: 200 });
+             random_string = randomstring.generate(15);
         } catch(err) {
-            console.log(err)
-            res.status(500).json({ msg: "Something went wrong generating short url", status: 500 });
+            console.log(err);
+            return { msg: err, status: 500 };
         }
+        return { string: random_string, status: 200 };
     }
 
     saveCollection = (req, res) => {
         const fields = req.body;
         const user = req.user;
+
+        // generate a random url string
+        const generated_short_string = this.#generatShortString();
+        if(generated_short_string.status === 500) {
+            // return an error message if the generating ramdom string failed
+            res.json(generated_short_string.status).json({ msg: generated_short_string.msg, status: generated_short_string.status });
+        }
 
         // get the domain name of the given website
         const url =  new URL(fields.originalUrl);
@@ -56,12 +62,15 @@ class DashboardController {
         generateScreenshot(fields.originalUrl, pathname, domain_name)
         .then(() => {
             
-            this.dashboard.saveCollection(fields, img_url+ domain_name, user)
+            this.dashboard.saveCollection(fields, img_url+ domain_name, user, generated_short_string)
             .then(data => {
                 console.log(data);
                 res.status(200).json({ msg: "Successlly saved the collection", status: 200 });
             })
             .catch(err => {
+                // delete the image if saving collection fails
+                fs.unlinkSync(pathname + domain_name + ".png");
+
                 console.log(err);
                 res.status(500).json({ msg: err, status: 500 });
             });
