@@ -33,7 +33,7 @@ export default function Collections() {
               <Collection
                 key={c.id}
                 collection_details={c.details}
-                collection_image_path={c.img_url}
+                collection_image_path={collection.base_url + c.img_url + ".png"}
                 collection_name={c.name}
               />
             );
