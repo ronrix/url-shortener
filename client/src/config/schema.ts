@@ -11,3 +11,9 @@ export const loginSchema = yup.object().shape({
     username: yup.string().required(),
     password: yup.string().required(),
 })
+
+export const addCollectionSchema = yup.object().shape({
+    name: yup.string().required(),    
+    original_url: yup.string().required(),    
+    details: yup.string().required(),    
+});
