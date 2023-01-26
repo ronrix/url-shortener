@@ -69,6 +69,7 @@ class DashboardModel {
                         }
                         reject({ msg: "Failed to save the collection", status: 500 });
                     });
+                return;
             }
 
             // insert new collection if user has no collections yet
