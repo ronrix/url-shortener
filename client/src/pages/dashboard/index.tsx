@@ -60,7 +60,10 @@ export default function Dashboard() {
           });
         })
         .then((res) => res.json())
-        .then(({ data, status }) => {
+        .then(({ data, status, base_url }) => {
+          // add the base_url to the data collection for rendering
+          data["base_url"] = base_url;
+
           if (status === 200) {
             setCollection(data);
           }
