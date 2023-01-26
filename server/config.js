@@ -1,3 +1,4 @@
+const base_url = "http://localhost:8000";
 const PORT = 8000;
 
 const db_config = {
@@ -11,6 +12,7 @@ const db_config = {
 module.exports = {
 	PORT,
 	db_config,
+	base_url
 }
 
 /*
