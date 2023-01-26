@@ -5,8 +5,8 @@ export type URL_COLLECTIONS_TYPE = {
   name: string;
   details: string;
   img_url: string;
-  real_path: string;
-  short_path: string;
+  original_url: string;
+  short_url: string;
 };
 
 export type ContextType = {
