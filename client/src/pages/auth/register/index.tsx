@@ -8,7 +8,7 @@ import Input from "../Input";
 import GoogleAuth from "../GoogleAuth";
 import SubmitBtn from "../SubmitBtn";
 
-import { registerSchema } from "../schema";
+import { registerSchema } from "../../../config/schema";
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState<boolean>(false);

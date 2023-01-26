@@ -8,7 +8,7 @@ import Input from "../Input";
 import GoogleAuth from "../GoogleAuth";
 import SubmitBtn from "../SubmitBtn";
 
-import { loginSchema } from "../schema";
+import { loginSchema } from "../../../config/schema";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
