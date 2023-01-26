@@ -69,7 +69,7 @@ export default function Dashboard() {
           navigate("/login");
         });
     }
-  }, [isLoading]);
+  }, [isLoading, showAddModal]);
 
   return (
     <>
