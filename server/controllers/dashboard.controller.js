@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 
 const generateScreenshot = require("../modules/functions/generateScreenshot");
+const { base_url } = require("../config");
 
 class DashboardController {
     constructor() {
@@ -23,7 +24,7 @@ class DashboardController {
         const user = req.user;
         this.dashboard.getUserCollections(user).then(data => {
             console.log(data);
-            res.status(200).json({ data, status: 200 });
+            res.status(200).json({ data, base_url, status: 200 });
         }).catch(err => res.status(err.status).json(err));
     }
 
@@ -56,13 +57,13 @@ class DashboardController {
         const pathname = path.join(__dirname, "../", `images/${user.username}/`);
 
         // this img_url will be stored in DB
-        const img_url = `/images/${user.username}/domain_name`;
+        const img_url = `/images/${user.username}/${domain_name}`;
 
         // genereate given website screenshot
         generateScreenshot(fields.originalUrl, pathname, domain_name)
         .then(() => {
             
-            this.dashboard.saveCollection(fields, img_url+ domain_name, user, generated_short_string)
+            this.dashboard.saveCollection(fields, img_url, user, generated_short_string)
             .then(data => {
                 console.log(data);
                 res.status(200).json({ msg: "Successlly saved the collection", status: 200 });
