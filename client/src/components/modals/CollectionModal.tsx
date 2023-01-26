@@ -33,7 +33,7 @@ export default function CollectionModal({
         {/* close btn | icon */}
         <i
           onClick={handleShowModal}
-          className="fa-solid fa-xmark text-grays text-sm absolute right-0 top-0 rounded-full p-2"
+          className="fa-solid fa-xmark text-grays text-sm absolute right-0 top-0 rounded-full p-2 hover:text-grayish"
         ></i>
 
         <div className="md:mr-5 flex-1">
