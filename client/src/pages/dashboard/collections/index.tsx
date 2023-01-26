@@ -32,9 +32,8 @@ export default function Collections() {
             return (
               <Collection
                 key={c.id}
-                collection_details={c.details}
-                collection_image_path={collection.base_url + c.img_url + ".png"}
-                collection_name={c.name}
+                collection={c}
+                base_url={collection.base_url}
               />
             );
           })}
