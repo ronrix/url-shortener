@@ -57,10 +57,10 @@ class DashboardController {
         const pathname = path.join(__dirname, "../", `images/${user.username}/`);
 
         // this img_url will be stored in DB
-        const img_url = `/images/${user.username}/${domain_name}`;
+        const img_url = `/images/${user.username}/${generated_short_string.string}`;
 
         // genereate given website screenshot
-        generateScreenshot(fields.originalUrl, pathname, domain_name)
+        generateScreenshot(fields.originalUrl, pathname, generated_short_string.string)
         .then(() => {
             
             this.dashboard.saveCollection(fields, img_url, user, generated_short_string)

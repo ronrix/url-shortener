@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const path = require("path");
 const fs = require("fs");
 
-module.exports = async function generateScreenshot(url, pathname, domain_name) {
+module.exports = async function generateScreenshot(url, pathname, filename) {
     // check images/user folder if existing. mkdir if not
     if(!fs.existsSync(pathname)) {
         fs.mkdirSync(path.join(pathname));
@@ -19,7 +19,7 @@ module.exports = async function generateScreenshot(url, pathname, domain_name) {
     const page = await browser.newPage();
     await page.goto(url);
     await page.screenshot({
-        path: pathname + domain_name + ".png",
+        path: pathname + filename + ".png",
     });
     await browser.close();
 }
