@@ -13,6 +13,7 @@ export type ContextType = {
   id: number;
   user_id: number;
   url_collections: [URL_COLLECTIONS_TYPE];
+  base_url: string;
   created_at: string | null;
   updated_at: string | null;
 };
