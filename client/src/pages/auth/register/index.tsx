@@ -4,7 +4,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import Input from "../Input";
+import Input from "../../../components/ui/inputs/Input";
 import GoogleAuth from "../GoogleAuth";
 import SubmitBtn from "../SubmitBtn";
 
