@@ -1,5 +1,9 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { addCollectionSchema } from "../../config/schema";
+import Input from "../ui/inputs/Input";
+import Notif from "./Notif";
 
 type Props = {
   handleToggleAddCollectionModal: () => void;
@@ -8,86 +12,106 @@ type Props = {
 export default function AddCollection({
   handleToggleAddCollectionModal,
 }: Props) {
-  const { register, handleSubmit } = useForm();
-  const [generatedUrl, setGeneratedUrl] = useState<string>("");
-  const [err, setErr] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting, errors },
+  } = useForm({
+    resolver: yupResolver(addCollectionSchema),
+  });
+  const [showNotif, setShowNotif] = useState<boolean>(false);
+  const [resMsg, setResMsg] = useState<{ msg: string; status: number }>();
 
-  function onSubmit() {
+  function onSubmit(data: any) {
+    console.log("submitting");
+
     fetch("http://localhost:8000/save-collection", {
       method: "POST",
       credentials: "include",
+      body: JSON.stringify({
+        name: data.name,
+        details: data.details,
+        originalUrl: data.original_url,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: { msg: string; status: number }) => {
         console.log(data);
-      })
-      .catch((err) => console.log(err));
 
-    console.log("submitting...");
-  }
+        // show the notif
+        setShowNotif(true);
+        // remove the notif in span of 2s
+        setTimeout(() => setShowNotif(false), 2000);
 
-  function generateShortUrl() {
-    fetch("http://localhost:8000/generate-short-url", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
         if (data.status === 200) {
-          setGeneratedUrl(data.generatedUrl);
-        } else {
-          setErr(data.msg);
+          setResMsg(data);
+          reset();
         }
+        setResMsg(data);
       })
       .catch((err) => {
         console.log(err);
-        setErr(err);
+        setResMsg({ msg: err, status: 500 });
       });
-    console.log("generating...");
   }
 
   return (
     <div className="fixed w-100 h-100 top-0 left-0 right-0 bottom-0 bg-primary-black bg-opacity-60 flex items-center justify-center">
+      {showNotif && <Notif resMsg={resMsg} />}
       <form
         className="w-320 rounded-lg bg-secondary-black text-white p-5 flex flex-col items-start"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit((data) => onSubmit(data))}
       >
         <div className="text-lg text-white font-bold">
+          <i className="fa-solid fa-folder-plus text-grayish text-2xl mr-2"></i>
           Create New Collection
         </div>
+        <label className="text-white my-2 w-full">
+          Name
+          <p className="text-grays mb-2 text-xs">
+            put a name to this collection
+          </p>
+          <Input
+            name="name"
+            placeholder="Type in here.."
+            register={register}
+            error={errors.name?.message}
+          />
+        </label>
         <label className="text-white my-2 w-full">
           Original URL
           <p className="text-grays mb-2 text-xs">
             paste the url you want to be shorten
           </p>
-          <input
-            {...register("original_url", { required: true })}
-            className="rounded w-full p-2 text-primary-black block outline-none"
+          <Input
+            name="original_url"
+            placeholder="Type in here.."
+            register={register}
+            error={errors.original_url?.message}
           />
         </label>
-        <div className="w-full mt-3">
-          <button
-            type="button"
-            onClick={generateShortUrl}
-            className="bg-light-gray p-2 rounded"
-          >
-            Generate
-          </button>
-          <span className="text-grays text-xs ml-2">Random short url</span>
-          <p className="bg-tersiary-black text-grayish w-full p-2 text-sm mt-2 rounded">
-            https://goshort.com/{generatedUrl || "dump"}
-          </p>
-        </div>
-        {err && (
-          <p className="bg-red-500 text-sm text-grayish w-full text-center px-2 mt-2 roundd-sm">
-            {err}
-          </p>
-        )}
+        <label className="text-white my-2 w-full">
+          Details
+          <p className="text-grays mb-2 text-xs">tell more about the link</p>
+          <textarea
+            {...register("details", { required: true, max: 100 })}
+            className="rounded bg-slate-100 w-full my-2 p-2 text-primary-black block max-h-32"
+            placeholder="Type in here.."
+          ></textarea>
+          {errors.details?.message && (
+            <p className="text-red-600 text-left text-xs m-2 mt-0">{`${errors.details.message}`}</p>
+          )}
+        </label>
         <div className="text-white self-end mt-5">
           <button
             type="button"
             onClick={handleToggleAddCollectionModal}
             className="text-sm text-grayish cursor-pointer"
+            disabled={isSubmitting}
           >
             Cancel
           </button>
@@ -95,6 +119,7 @@ export default function AddCollection({
             type="submit"
             value="Save"
             className="bg-dark-green p-2 rounded ml-5 cursor-pointer"
+            disabled={isSubmitting}
           />
         </div>
       </form>
