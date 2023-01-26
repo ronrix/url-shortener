@@ -82,7 +82,7 @@ class DashboardModel {
                         \"details\": \"${fields.details}\", 
                         \"img_url\": \"${img_url}\",
                         \"original_url\": \"${fields.originalUrl}\",
-                        \"short_path\": \"${generated_short_string.string}\"}]
+                        \"short_url\": \"${generated_short_string.string}\"}]
                     `],
                     (err, result, _) => {
                         if(err) {
