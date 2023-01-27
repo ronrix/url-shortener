@@ -1,6 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
+import Cookies from "js-cookie";
 
 import App from "./App";
 import "./index.css";
@@ -11,6 +16,9 @@ import Settings from "./pages/dashboard/settings";
 import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 
+// get the cookie user
+const isAuthenticated = Cookies.get("c_user");
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,15 +27,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: !isAuthenticated ? <Login /> : <Navigate to="/dashboard" />,
   },
   {
     path: "/register",
-    element: <Register />,
+    element: !isAuthenticated ? <Register /> : <Navigate to="/dashboard" />,
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: isAuthenticated ? <Dashboard /> : <Navigate to="/login" />,
     errorElement: <NotFound />,
     children: [
       {
