@@ -27,15 +27,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: !isAuthenticated ? <Login /> : <Navigate to="/dashboard" />,
+    element: isAuthenticated ? <Navigate to="/dashboard" /> : <Login />,
   },
   {
     path: "/register",
-    element: !isAuthenticated ? <Register /> : <Navigate to="/dashboard" />,
+    element: isAuthenticated ? <Navigate to="/dashboard" /> : <Register />,
   },
   {
     path: "/dashboard",
-    element: isAuthenticated ? <Dashboard /> : <Navigate to="/login" />,
+    element: <Dashboard />,
     errorElement: <NotFound />,
     children: [
       {
