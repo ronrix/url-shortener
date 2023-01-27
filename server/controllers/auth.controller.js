@@ -15,6 +15,7 @@ class AuthController {
 			
 			const token = generateAccessToken(data, { expiresIn: '1day'});
 			res.cookie("token", token, { httpOnly: true });
+			res.cookie("c_user", data.id, { httpOnly: false });
 			res.status(200).json({ msg: "Successfully Login", status: 200 });
 
 		}).catch(err => {
@@ -29,6 +30,7 @@ class AuthController {
 
 			const token = generateAccessToken(data, { expiresIn: '1day'});
 			res.cookie("token", token, { httpOnly: true });
+			res.cookie("c_user", data.id, { httpOnly: false });
 			res.status(200).json({ msg: "Successfully Registered", status: 200 });
 
 		}).catch(err => {
@@ -43,6 +45,7 @@ class AuthController {
 			console.log(data);
 			const token = generateAccessToken(data, { expiresIn: '1day'});
 			res.cookie("token", token, { httpOnly: true });
+			res.cookie("c_user", data.id, { httpOnly: false });
 			res.status(200).json({ msg: "Successful", status: 200});
 		}).catch(err => {
 			res.status(err.status).json(err);
@@ -67,6 +70,7 @@ class AuthController {
 
 	signOut = (req, res) => {
 		res.clearCookie("token");
+		res.clearCookie("c_user");
 		res.status(200).json({ msg: "Successfuly sign out", status: 200 });
 	}
 
