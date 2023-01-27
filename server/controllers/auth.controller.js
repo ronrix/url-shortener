@@ -1,5 +1,6 @@
 const AuthModel = require("../models/auth.model");
 const generateAccessToken = require("../modules/functions/generateAccessToken");
+const generateDefaultAvatar = require("../modules/functions/generateDefaultAvatar");
 
 class AuthController {
 
@@ -26,6 +27,8 @@ class AuthController {
 	register = (req, res) => {
 		const fields = req.body;
 
+		const avatar = generateDefaultAvatar();
+		fields["avatar"] = avatar;
 		this.auth.register(fields).then(data => {
 
 			const token = generateAccessToken(data, { expiresIn: '1day'});
