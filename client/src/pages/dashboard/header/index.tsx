@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signout } from "../../../api/signout";
 
 type Props = {
   user: { username: string; img_path: string };
@@ -8,22 +9,6 @@ type Props = {
 export default function Header({ user }: Props) {
   const [showSignOutBtn, setSignOutBtn] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  function handleSignOut() {
-    fetch("http://localhost:8000/signout", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then(({ msg, status }) => {
-        // navigate to login page
-        console.log(msg);
-        if (status === 200) {
-          navigate("/login");
-        }
-      })
-      .catch((err) => console.log(err));
-  }
 
   return (
     <nav className="flex justify-between items-center p-4">
@@ -52,7 +37,7 @@ export default function Header({ user }: Props) {
           {showSignOutBtn && (
             <div
               className="p-2 text-grayish text-xs absolute bg-secondary-black -bottom-9 right-0"
-              onClick={handleSignOut}
+              onClick={() => signout(navigate)}
             >
               sign out
             </div>
