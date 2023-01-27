@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -7,14 +7,22 @@ import {
 } from "react-router-dom";
 import Cookies from "js-cookie";
 
-import App from "./App";
+// import App from "./App";
 import "./index.css";
-import NotFound from "./errors/NotFound";
-import Dashboard from "./pages/dashboard";
-import Collections from "./pages/dashboard/collections";
-import Settings from "./pages/dashboard/settings";
-import Login from "./pages/auth/login";
-import Register from "./pages/auth/register";
+// import NotFound from "./errors/NotFound";
+// import Dashboard from "./pages/dashboard";
+// import Collections from "./pages/dashboard/collections";
+// import Settings from "./pages/dashboard/settings";
+// import Login from "./pages/auth/login";
+// import Register from "./pages/auth/register";
+
+const App = lazy(() => import("./App"));
+const NotFound = lazy(() => import("./errors/NotFound"));
+const Dashboard = lazy(() => import("./pages/dashboard"));
+const Collections = lazy(() => import("./pages/dashboard/collections"));
+const Settings = lazy(() => import("./pages/dashboard/settings"));
+const Login = lazy(() => import("./pages/auth/login"));
+const Register = lazy(() => import("./pages/auth/register"));
 
 // get the cookie user
 const isAuthenticated = Cookies.get("c_user");
@@ -22,29 +30,75 @@ const isAuthenticated = Cookies.get("c_user");
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
-    errorElement: <NotFound />,
+    element: (
+      <Suspense fallback={<div>loading....</div>}>
+        <App />
+      </Suspense>
+    ),
+    errorElement: (
+      <Suspense fallback={<div>loading...</div>}>
+        <NotFound />
+      </Suspense>
+    ),
   },
   {
     path: "/login",
-    element: isAuthenticated ? <Navigate to="/dashboard" /> : <Login />,
+    element: isAuthenticated ? (
+      <Navigate to="/dashboard" />
+    ) : (
+      <Suspense fallback={<div>loading...</div>}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     path: "/register",
-    element: isAuthenticated ? <Navigate to="/dashboard" /> : <Register />,
+    element: isAuthenticated ? (
+      <Navigate to="/dashboard" />
+    ) : (
+      <Suspense fallback={<div>loading...</div>}>
+        <Register />
+      </Suspense>
+    ),
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
-    errorElement: <NotFound />,
+    element: (
+      <Suspense fallback={<div>loading...</div>}>
+        <Dashboard />
+      </Suspense>
+    ),
+    errorElement: (
+      <Suspense fallback={<div>loading...</div>}>
+        <NotFound />
+      </Suspense>
+    ),
     children: [
       {
         path: "",
-        element: <Collections />,
+        element: (
+          <Suspense
+            fallback={
+              <div className="flex justify-center">
+                <img
+                  src="../../src/assets/loading.gif"
+                  alt="loading animation"
+                  className="w-14"
+                />
+              </div>
+            }
+          >
+            <Collections />
+          </Suspense>
+        ),
       },
       {
         path: "settings",
-        element: <Settings />,
+        element: (
+          <Suspense fallback={<div>loading...</div>}>
+            <Settings />
+          </Suspense>
+        ),
       },
     ],
   },
