@@ -69,23 +69,6 @@ export default function Register() {
     });
   }
 
-  useEffect(() => {
-    fetch("http://localhost:8000/check-auth", {
-      method: "GET",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => res.json())
-      .then(({ status }) => {
-        if (status === 200) {
-          navigate("/dashboard");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   return (
     <GoogleOAuthProvider clientId="926950853129-r0lvuk9cs0nhdhq13bk4jomkcchelcni.apps.googleusercontent.com">
       <div className="h-screen w-full max-w-500 flex items-center justify-center relative">
