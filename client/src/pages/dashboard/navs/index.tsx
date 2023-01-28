@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-type Props = {
-  handleToggleAddCollectionModal: () => void;
-};
-
-export default function Navs({ handleToggleAddCollectionModal }: Props) {
+export default function Navs() {
   const { pathname } = useLocation();
 
   return (
@@ -34,10 +30,6 @@ export default function Navs({ handleToggleAddCollectionModal }: Props) {
           Settings
         </Link>
       </div>
-      <i
-        className="fa-solid fa-circle-plus text-light-gray text-lg cursor-pointer"
-        onClick={handleToggleAddCollectionModal}
-      ></i>
     </div>
   );
 }
