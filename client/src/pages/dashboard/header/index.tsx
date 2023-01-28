@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { signout } from "../../../api/signout";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 
 type Props = {
   user: { username: string; img_path: string };
@@ -9,6 +10,9 @@ type Props = {
 export default function Header({ user }: Props) {
   const [showSignOutBtn, setSignOutBtn] = useState<boolean>(false);
   const navigate = useNavigate();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useClickOutside(ref, () => setSignOutBtn(false));
 
   return (
     <nav className="flex justify-between items-center p-4">
@@ -28,6 +32,7 @@ export default function Header({ user }: Props) {
         <div
           className="w-10 h-10 rounded-full overflow-hidden ml-5 border-2 border-primary-black outline outline-grayish cursor-pointer"
           onClick={() => setSignOutBtn((prev) => !prev)}
+          ref={ref}
         >
           <img
             src={user.img_path || `../../src/assets/images/myself.jpg`}
