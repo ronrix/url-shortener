@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ContextType } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import AddCollection from "../../components/modals/AddCollection";
-import { CollectionContext, ContextType } from "../../context/collection";
+import {
+  CollectionContext,
+  CollectionType,
+  UserType,
+} from "../../context/collection";
 import Header from "./header";
 import Navs from "./navs";
 
 export default function Dashboard() {
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [collection, setCollection] = useState<ContextType>();
-  const [userInfo, setUserInfo] = useState<{
-    username: string;
-    img_path: string;
-  }>({ username: "", img_path: "" });
+  const [collection, setCollection] = useState<CollectionType>(
+    {} as CollectionType
+  );
+  const [userInfo, setUserInfo] = useState<UserType>({} as UserType);
 
   const navigate = useNavigate();
 
@@ -81,7 +84,9 @@ export default function Dashboard() {
                 handleToggleAddCollectionModal={handleToggleAddCollectionModal}
               />
               <div className="mt-10">
-                <CollectionContext.Provider value={collection}>
+                <CollectionContext.Provider
+                  value={{ collection, user: userInfo }}
+                >
                   <Outlet />
                 </CollectionContext.Provider>
               </div>
