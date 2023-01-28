@@ -17,3 +17,8 @@ export const addCollectionSchema = yup.object().shape({
     original_url: yup.string().required(),    
     details: yup.string().required(),    
 });
+
+export const updateProfileSchema = yup.object().shape({
+    username: yup.string().required(),
+    email: yup.string().required().email(),
+})
