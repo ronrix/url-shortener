@@ -21,6 +21,7 @@ export type CollectionType = {
 export type UserType = {
   username: string;
   img_path: string;
+  email: string;
 };
 
 export type ContextType = {
