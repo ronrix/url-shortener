@@ -17,8 +17,8 @@ module.exports = {
         "darky-gray": "#868686",
         "light-gray": "#b5a9a9",
         "grayish": "#f9f9f9",
-        "light-green": "#A3EBB1",
-        "dark-green": "#18A558"
+        "light-green": "#39d353",
+        "dark-green": "#26a641"
       },
       spacing: {
         "logo": "32px",
