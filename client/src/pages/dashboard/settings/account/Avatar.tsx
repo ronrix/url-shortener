@@ -16,7 +16,7 @@ export default function Avatar() {
           className="rounded-full w-1/2"
         />
         <div
-          className="text-grayish bg absolute bottom-0 left-0 bg-primary-black px-2 py-1 border border-grays rounded-md cursor-pointer"
+          className="text-grayish bg absolute bottom-0 left-0 bg-primary-black px-2 py-1 border border-grays rounded-md cursor-pointer font-thin"
           onClick={() => setIsOpen((prev) => !prev)}
           ref={ref}
         >
