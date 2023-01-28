@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import UserTable from "./UserTable";
 
 export default function Account() {
   const [username, setUsername] = useState<{
@@ -13,30 +14,9 @@ export default function Account() {
   return (
     <div className="">
       <h4 className="text-grayish font-bold">Account Settings</h4>
-      <p className="text-grays text-sm">
-        You can change your username and password here.
-      </p>
-      <div className="mt-5 text-grayish flex justify-between items-center">
-        <table className="w-full">
-          <tr>
-            <td className="text-grayish font-bold">Username</td>
-          </tr>
-          <tr>
-            <td className="text-grayish">ronrix</td>
-            <td>
-              <span className="text-dark-green cursor-pointer">edit</span>
-            </td>
-          </tr>
-          <tr>
-            <td className="text-grayish font-bold">Password</td>
-          </tr>
-          <tr>
-            <td className="text-grayish">*********</td>
-            <td>
-              <span className="text-dark-green cursor-pointer">edit</span>
-            </td>
-          </tr>
-        </table>
+      <p className="text-grays text-sm">You personal account</p>
+      <div className="mt-3 text-grayish flex justify-between items-center">
+        <UserTable />
       </div>
     </div>
   );
