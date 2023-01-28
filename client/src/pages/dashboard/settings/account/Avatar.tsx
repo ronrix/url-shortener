@@ -5,10 +5,7 @@ export default function Avatar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
-  function handleSetIsOpen() {
-    setIsOpen((prev) => !prev);
-  }
-  useClickOutside(ref, handleSetIsOpen);
+  useClickOutside(ref, () => setIsOpen(false));
 
   return (
     <div className="flex-1 relative">
@@ -20,7 +17,7 @@ export default function Avatar() {
         />
         <div
           className="text-grayish bg absolute bottom-0 left-0 bg-primary-black px-2 py-1 border border-grays rounded-md cursor-pointer"
-          onClick={handleSetIsOpen}
+          onClick={() => setIsOpen((prev) => !prev)}
           ref={ref}
         >
           <i className="fa-solid fa-pen text-grayish mr-2"></i>
