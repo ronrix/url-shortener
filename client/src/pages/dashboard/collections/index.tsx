@@ -7,7 +7,7 @@ import {
 import Collection from "./Collection";
 
 export default function Collections() {
-  const collection = useContext<ContextType | undefined>(CollectionContext);
+  const { collection } = useContext<ContextType>(CollectionContext);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
