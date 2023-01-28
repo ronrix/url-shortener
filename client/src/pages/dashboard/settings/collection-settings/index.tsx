@@ -3,7 +3,7 @@ import React from "react";
 export default function CollectionSettings() {
   return (
     <div>
-      <h3>Collection Settings</h3>
+      <h3 className="text-grayish">New feature soon!</h3>
     </div>
   );
 }
