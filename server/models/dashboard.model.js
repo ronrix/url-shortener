@@ -9,7 +9,7 @@ class DashboardModel {
 
     getUserInfo(user) {
         return new Promise(async (resolve, reject) => {
-            await this.conn.connection.execute("SELECT username, img_path FROM users WHERE id=?", [user.id], (err, result, _) => {
+            await this.conn.connection.execute("SELECT username, img_path, email FROM users WHERE id=?", [user.id], (err, result, _) => {
                 if(err) {
                     reject({ msg: err, status: 500 });
                 }
