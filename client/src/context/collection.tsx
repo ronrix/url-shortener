@@ -9,7 +9,7 @@ export type URL_COLLECTIONS_TYPE = {
   short_url: string;
 };
 
-export type ContextType = {
+export type CollectionType = {
   id: number;
   user_id: number;
   url_collections: [URL_COLLECTIONS_TYPE];
@@ -18,6 +18,17 @@ export type ContextType = {
   updated_at: string | null;
 };
 
-export const CollectionContext = createContext<ContextType | undefined>(
-  undefined
-);
+export type UserType = {
+  username: string;
+  img_path: string;
+};
+
+export type ContextType = {
+  collection: CollectionType;
+  user: UserType;
+};
+
+export const CollectionContext = createContext<ContextType>({
+  user: {} as UserType,
+  collection: {} as CollectionType,
+});
