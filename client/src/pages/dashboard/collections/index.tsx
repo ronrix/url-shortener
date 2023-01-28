@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
+
+import AddCollection from "../../../components/modals/AddCollection";
 import {
   CollectionContext,
   ContextType,
@@ -8,16 +10,27 @@ import Collection from "./Collection";
 
 export default function Collections() {
   const { collection } = useContext<ContextType>(CollectionContext);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, [loading]);
+  function handleToggleAddCollectionModal() {
+    setShowAddModal((prev) => !prev);
+  }
 
   return (
     <>
+      {/* modal */}
+      {showAddModal && (
+        <AddCollection
+          handleToggleAddCollectionModal={handleToggleAddCollectionModal}
+        />
+      )}
+      <div
+        className="text-grayish border border-grays rounded-md p-1 px-2 inline-flex items-center cursor-pointer hover:bg-dark-green duration-75 mb-5"
+        onClick={handleToggleAddCollectionModal}
+      >
+        Add new collection
+        <i className="fa-solid fa-circle-plus text-grayish text-lg ml-2"></i>
+      </div>
       {collection?.url_collections.length ? (
         <div className="text-white grid mobile:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2">
           {collection?.url_collections.map((c: URL_COLLECTIONS_TYPE) => {

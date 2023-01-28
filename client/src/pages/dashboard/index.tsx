@@ -10,7 +10,6 @@ import Header from "./header";
 import Navs from "./navs";
 
 export default function Dashboard() {
-  const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [collection, setCollection] = useState<CollectionType>(
     {} as CollectionType
@@ -18,11 +17,6 @@ export default function Dashboard() {
   const [userInfo, setUserInfo] = useState<UserType>({} as UserType);
 
   const navigate = useNavigate();
-
-  function handleToggleAddCollectionModal() {
-    setShowAddModal((prev) => !prev);
-  }
-
   useEffect(() => {
     // fetch all the url collections
     // set the loading to false after getting and passing all the requirements to request to a protected route
@@ -58,7 +52,7 @@ export default function Dashboard() {
         console.log(err);
         navigate("/login");
       });
-  }, [showAddModal]);
+  }, []);
 
   return (
     <>
@@ -80,9 +74,7 @@ export default function Dashboard() {
               <h1 className="text-light-gray font-bold text-4xl">
                 Main Dashboard
               </h1>
-              <Navs
-                handleToggleAddCollectionModal={handleToggleAddCollectionModal}
-              />
+              <Navs />
               <div className="mt-10">
                 <CollectionContext.Provider
                   value={{ collection, user: userInfo }}
@@ -91,13 +83,6 @@ export default function Dashboard() {
                 </CollectionContext.Provider>
               </div>
             </div>
-
-            {/* modal */}
-            {showAddModal && (
-              <AddCollection
-                handleToggleAddCollectionModal={handleToggleAddCollectionModal}
-              />
-            )}
           </div>
         </div>
       )}
