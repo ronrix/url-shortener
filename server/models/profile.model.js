@@ -26,7 +26,7 @@ class ProfileModel {
                 }
 
                 if(result.affectedRows) {
-                    resolve({ msg: "Successfully updating the profile!", status: 200 });
+                    resolve({ msg: "Successfully updated the profile!", status: 200 });
                 }
 
                 reject({ msg: "Something went wrong udpating your profile", status: 500 });
