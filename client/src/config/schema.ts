@@ -22,3 +22,9 @@ export const updateProfileSchema = yup.object().shape({
     username: yup.string().required(),
     email: yup.string().required().email(),
 })
+
+export const udpatePasswordSchema = yup.object().shape({
+    old_password: yup.string().required().min(8),
+    new_password: yup.string().required().min(8),
+    confirm_new_password: yup.string().oneOf([yup.ref("new_password"), null], "Password must match")
+})
