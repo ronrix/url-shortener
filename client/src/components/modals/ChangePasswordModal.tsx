@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { udpatePasswordSchema } from "../../config/schema";
 
 import Input from "../ui/inputs/Input";
+import Notif from "./Notif";
 
 type Props = {
   handleCloseModal: () => void;
@@ -11,9 +12,12 @@ type Props = {
 
 export default function ChangePasswordModal({ handleCloseModal }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showNotif, setShowNotif] = useState<boolean>(false);
+  const [resMsg, setResMsg] = useState<{ msg: string; status: number }>();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(udpatePasswordSchema) });
 
@@ -29,8 +33,23 @@ export default function ChangePasswordModal({ handleCloseModal }: Props) {
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
+      .then((data) => {
+        setIsLoading(false);
+        setShowNotif(true);
+        setTimeout(() => setShowNotif(false), 2000);
+
+        if (data.status === 200) {
+          setResMsg(data);
+          return;
+        }
+        // if failed changing password. reset just the old password field
+        reset({ old_password: "" });
+      })
+      .catch((err) => {
+        console.log(err);
+        reset({ old_password: "" });
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -38,6 +57,7 @@ export default function ChangePasswordModal({ handleCloseModal }: Props) {
       className="fixed w-100 h-100 top-0 left-0 right-0 bottom-0 bg-primary-black bg-opacity-60 flex items-center justify-center z-20"
       onClick={handleCloseModal}
     >
+      {showNotif && <Notif resMsg={resMsg} />}
       <form
         className="w-320 rounded-lg bg-secondary-black text-white p-5 flex flex-col items-start"
         onSubmit={handleSubmit((data) => onSubmit(data))}
