@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
+import ChangePasswordModal from "../../../../components/modals/ChangePasswordModal";
 import Notif from "../../../../components/modals/Notif";
 import { updateProfileSchema } from "../../../../config/schema";
 
@@ -13,6 +14,8 @@ export default function UserTable() {
   const { user } = useContext<ContextType>(CollectionContext);
   const [showNotif, setShowNotif] = useState<boolean>(false);
   const [resMsg, setResMsg] = useState<{ msg: string; status: number }>();
+  const [showChangePassModal, setShowChangePassModal] =
+    useState<boolean>(false);
 
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(updateProfileSchema),
@@ -43,12 +46,20 @@ export default function UserTable() {
   }
 
   function handleShowPasswordModal() {
-    alert("showing modal");
+    setShowChangePassModal(true);
+  }
+
+  function handleClosePasswordModal() {
+    setShowChangePassModal(false);
   }
 
   return (
     <>
       {showNotif && <Notif resMsg={resMsg} />}
+      {showChangePassModal && (
+        <ChangePasswordModal handleCloseModal={handleClosePasswordModal} />
+      )}
+
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
         <div className="flex justify-start align-center">
           <div className="w-1/2">
