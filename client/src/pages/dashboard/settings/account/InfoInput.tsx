@@ -7,7 +7,6 @@ type Props = {
   inputValue: string;
   note: string;
   register: UseFormRegister<FieldValues>;
-  options: {};
 };
 
 export default function InfoInput({
@@ -15,7 +14,6 @@ export default function InfoInput({
   inputValue,
   note,
   register,
-  options,
 }: Props) {
   return (
     <label className="text-grayish font-bold block mt-2">
@@ -23,7 +21,7 @@ export default function InfoInput({
       <input
         {...register(labelName.toLowerCase())}
         type="text"
-        value={inputValue}
+        defaultValue={inputValue}
         className="px-2 py-1 bg-transparent border border-grays outline-none focus:border-light-green rounded-md text-grayish block w-full font-thin"
       />
       <p className="text-grays text-xs mt-2">{note}</p>

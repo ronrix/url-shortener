@@ -31,14 +31,12 @@ export default function UserTable() {
             register={register}
             labelName="Username"
             inputValue={user.username}
-            options={{ required: true, minLength: 8 }}
             note="You can change your usernam but make sure that this is unique"
           />
           <InfoInput
             register={register}
             labelName="Email"
             inputValue={user.email}
-            options={{ required: true, email: true }}
             note="By changing your email, you have to make sure that your email is
             verified. This email will be your account security when your
             password has been compromised."
