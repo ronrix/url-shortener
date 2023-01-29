@@ -30,7 +30,7 @@ export default function Input({
     <>
       <input
         {...register(name)}
-        className="border p-2 my-2 bg-slate-100 focus:bg-white rounded w-full text-primary-black block"
+        className="border p-2 my-2 bg-slate-100 focus:bg-white rounded w-full text-primary-black block outline-none focus:border focus:border-dark-green"
         placeholder={placeholder}
         type={type}
       />
