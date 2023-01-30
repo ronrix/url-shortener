@@ -61,8 +61,8 @@ export default function UserTable() {
       )}
 
       <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-        <div className="flex justify-start align-center">
-          <div className="w-1/2">
+        <div className="flex justify-start align-center flex-col md:flex-row">
+          <div className="w-full md:w-1/2 order-last md:order-first">
             <InfoInput
               register={register}
               labelName="Username"
