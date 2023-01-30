@@ -59,10 +59,16 @@ export default function ChangePasswordModal({ handleCloseModal }: Props) {
     >
       {showNotif && <Notif resMsg={resMsg} />}
       <form
-        className="w-320 rounded-lg bg-secondary-black text-white p-5 flex flex-col items-start"
+        className="w-320 rounded-lg bg-secondary-black text-white p-5 flex flex-col items-start relative"
         onSubmit={handleSubmit((data) => onSubmit(data))}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* close btn | icon */}
+        <i
+          onClick={handleCloseModal}
+          className="fa-solid fa-xmark text-grays text-sm absolute right-0 top-0 rounded-full p-2 hover:text-grayish"
+        ></i>
+
         <div className="text-lg text-white font-bold">Change password</div>
         <label className="text-white my-2 w-full">
           Old password
