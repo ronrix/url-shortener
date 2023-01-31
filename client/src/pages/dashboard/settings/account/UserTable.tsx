@@ -1,8 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import ChangePasswordModal from "../../../../components/modals/ChangePasswordModal";
 import Notif from "../../../../components/modals/Notif";
+import UploadAvatarModal from "../../../../components/modals/UploadAvatarModal";
 import { updateProfileSchema } from "../../../../config/schema";
 
 import { CollectionContext, ContextType } from "../../../../context/collection";
@@ -16,10 +17,27 @@ export default function UserTable() {
   const [resMsg, setResMsg] = useState<{ msg: string; status: number }>();
   const [showChangePassModal, setShowChangePassModal] =
     useState<boolean>(false);
+  const [cropModal, setShowCropModal] = useState<boolean>(false);
 
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(updateProfileSchema),
   });
+
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const [imageSrc, setImageSrc] = useState<string>("");
+
+  function handleSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log("in here..");
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+
+      reader.readAsDataURL(e.target.files[0]);
+      reader.addEventListener("load", () => {
+        setImageSrc(reader.result as string);
+        setShowCropModal(true);
+      });
+    }
+  }
 
   function onSubmit(data: any) {
     console.log(data);
@@ -51,6 +69,10 @@ export default function UserTable() {
 
   function handleClosePasswordModal() {
     setShowChangePassModal(false);
+  }
+
+  function handleCloseCropModal() {
+    setShowCropModal(false);
   }
 
   return (
@@ -85,7 +107,13 @@ export default function UserTable() {
               Change password
             </button>
           </div>
-          <Avatar />
+          <Avatar fileRef={fileRef} />
+          <input
+            ref={fileRef}
+            type="file"
+            className="hidden"
+            onInput={handleSelectFile}
+          />
         </div>
 
         <input
@@ -104,6 +132,13 @@ export default function UserTable() {
           the page
         </p>
       </form>
+
+      {cropModal && (
+        <UploadAvatarModal
+          imageSrc={imageSrc}
+          handleCloseCropModal={handleCloseCropModal}
+        />
+      )}
     </>
   );
 }
