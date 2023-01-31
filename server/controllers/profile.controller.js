@@ -47,7 +47,7 @@ class ProfileController {
             }
 
             // update the user's table and add the file path of the user's avatar
-            const image_path = "images/" + user.username + "/avatar.jpeg";
+            const image_path = "/images/" + user.username + "/avatar.jpeg";
             this.profile.updateAvatar(image_path, user.id)
             .then(data => {
                 // return the response to the client
