@@ -1,11 +1,6 @@
-import React, { useState, useEffect, ContextType } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import AddCollection from "../../components/modals/AddCollection";
-import {
-  CollectionContext,
-  CollectionType,
-  UserType,
-} from "../../context/collection";
+import { CollectionContext, CollectionType } from "../../context/collection";
 import Header from "./header";
 import Navs from "./navs";
 
@@ -14,27 +9,15 @@ export default function Dashboard() {
   const [collection, setCollection] = useState<CollectionType>(
     {} as CollectionType
   );
-  const [userInfo, setUserInfo] = useState<UserType>({} as UserType);
 
   const navigate = useNavigate();
   useEffect(() => {
     // fetch all the url collections
     // set the loading to false after getting and passing all the requirements to request to a protected route
-    fetch("http://localhost:8000/dashboard", {
+    fetch("http://localhost:8000/get-collections", {
       method: "GET",
       credentials: "include",
     })
-      .then((res) => res.json())
-      .then(async ({ data, status }) => {
-        if (status === 200) {
-          setUserInfo(data[0]);
-        }
-
-        return fetch("http://localhost:8000/get-collections", {
-          method: "GET",
-          credentials: "include",
-        });
-      })
       .then((res) => res.json())
       .then(({ data, status, base_url }) => {
         setIsLoading(false);
@@ -67,7 +50,7 @@ export default function Dashboard() {
       ) : (
         <div className="bg-primary-black min-h-screen">
           <div className="container mx-auto">
-            <Header user={userInfo} />
+            <Header />
 
             {/* body */}
             <div className="mt-10 p-5">
@@ -76,9 +59,7 @@ export default function Dashboard() {
               </h1>
               <Navs />
               <div className="mt-10">
-                <CollectionContext.Provider
-                  value={{ collection, user: userInfo }}
-                >
+                <CollectionContext.Provider value={{ collection }}>
                   <Outlet />
                 </CollectionContext.Provider>
               </div>
