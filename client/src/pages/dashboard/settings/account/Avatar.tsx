@@ -10,7 +10,6 @@ type Props = {
 export default function Avatar({ fileRef, user }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
-  const [img, setImg] = useState<string>();
 
   useClickOutside(ref, () => setIsOpen(false));
 
@@ -20,21 +19,20 @@ export default function Avatar({ fileRef, user }: Props) {
     }
   }
 
-  useEffect(() => {
-    if (user) {
-      setImg((prev) => {
-        if (user.is_google_auth) {
-          return user.img_path;
-        }
-        return user.base_url + user.img_path;
-      });
-    }
-  }, []);
-
   return (
     <div className="flex-1 relative">
       <div className="relative ml-10">
-        <img src={img} alt="@ronrix" className="rounded-full w-1/2" />
+        <img
+          src={
+            user
+              ? user.is_google_auth
+                ? user.img_path
+                : user.base_url + user.img_path
+              : ""
+          }
+          alt="@ronrix"
+          className="rounded-full w-1/2"
+        />
         <div
           className="text-grayish bg absolute bottom-0 left-0 bg-primary-black px-2 py-1 border border-grays rounded-md cursor-pointer font-thin"
           onClick={() => setIsOpen((prev) => !prev)}
