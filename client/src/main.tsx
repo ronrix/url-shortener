@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -7,14 +7,7 @@ import {
 } from "react-router-dom";
 import Cookies from "js-cookie";
 
-// import App from "./App";
 import "./index.css";
-// import NotFound from "./errors/NotFound";
-// import Dashboard from "./pages/dashboard";
-// import Collections from "./pages/dashboard/collections";
-// import Settings from "./pages/dashboard/settings";
-// import Login from "./pages/auth/login";
-// import Register from "./pages/auth/register";
 
 const App = lazy(() => import("./App"));
 const NotFound = lazy(() => import("./errors/NotFound"));
