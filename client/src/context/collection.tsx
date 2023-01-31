@@ -21,15 +21,15 @@ export type CollectionType = {
 export type UserType = {
   username: string;
   img_path: string;
+  base_url: string;
   email: string;
+  status: number;
 };
 
 export type ContextType = {
   collection: CollectionType;
-  user: UserType;
 };
 
 export const CollectionContext = createContext<ContextType>({
-  user: {} as UserType,
   collection: {} as CollectionType,
 });
