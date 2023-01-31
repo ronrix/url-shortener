@@ -10,7 +10,7 @@ type Props = {
 export default function Avatar({ fileRef, user }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
-  const [img, setImg] = useState<string>("../../src/assets/images/myself.jpg");
+  const [img, setImg] = useState<string>();
 
   useClickOutside(ref, () => setIsOpen(false));
 
