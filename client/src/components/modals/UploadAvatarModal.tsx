@@ -7,12 +7,14 @@ type Props = {
   imageSrc: string | null;
   handleSetResMsg: (data: { msg: string; status: number }) => void;
   handleCloseCropModal: () => void;
+  handleSetAvatar: (avatar: string) => void;
 };
 
 export default function UploadAvatarModal({
   imageSrc,
   handleCloseCropModal,
   handleSetResMsg,
+  handleSetAvatar,
 }: Props) {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
@@ -69,9 +71,17 @@ export default function UploadAvatarModal({
         })
           .then((res) => res.json())
           .then((data) => {
-            handleSetResMsg(data);
+            const resMsg: { msg: string; status: number } = {
+              msg: data.msg,
+              status: data.status,
+            };
+            console.log(data);
+            handleSetResMsg(resMsg);
+            handleSetAvatar(data?.avatar);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+          });
       }, "image/jpeg");
     } catch (e) {
       console.error(e);
@@ -94,7 +104,7 @@ export default function UploadAvatarModal({
               image={imageSrc}
               crop={crop}
               zoom={zoom}
-              aspect={4 / 3}
+              aspect={4 / 4}
               onCropChange={setCrop}
               onCropComplete={onCropComplete}
               onZoomChange={setZoom}
