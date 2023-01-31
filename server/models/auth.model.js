@@ -96,9 +96,9 @@ class AuthModel {
 				if(!selectResult.length) { // if no user found
 
 					// store the fields into array for query. setting the google id to password column
-					const insert_fields = [fields.username, fields.email, fields.id, fields.picture];
+					const insert_fields = [fields.username, fields.email, true, fields.id, fields.picture];
 
-					await this.conn.connection.execute("INSERT INTO users(username, email, password, img_path) VALUES(?, ?, ?, ?)", insert_fields, (err, insertResult, _) => {
+					await this.conn.connection.execute("INSERT INTO users(username, email, is_google_auth, password, img_path) VALUES(?, ?, ?, ?, ?)", insert_fields, (err, insertResult, _) => {
 						if(err) {
 							reject({ msg: err, status: 500});
 						}
