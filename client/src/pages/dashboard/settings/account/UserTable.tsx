@@ -6,13 +6,17 @@ import Notif from "../../../../components/modals/Notif";
 import UploadAvatarModal from "../../../../components/modals/UploadAvatarModal";
 import { updateProfileSchema } from "../../../../config/schema";
 
-import { CollectionContext, ContextType } from "../../../../context/collection";
+import { UserType } from "../../../../context/collection";
 import Avatar from "./Avatar";
 import InfoInput from "./InfoInput";
 
-export default function UserTable() {
+type Props = {
+  user: UserType;
+  handleUserAvatar: (url: string) => void;
+};
+
+export default function UserTable({ user, handleUserAvatar }: Props) {
   // get user data to display into DOM
-  const { user } = useContext<ContextType>(CollectionContext);
   const [showNotif, setShowNotif] = useState<boolean>(false);
   const [resMsg, setResMsg] = useState<{ msg: string; status: number }>();
   const [showChangePassModal, setShowChangePassModal] =
@@ -27,7 +31,6 @@ export default function UserTable() {
   const [imageSrc, setImageSrc] = useState<string>("");
 
   function handleSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log("in here..");
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
 
@@ -96,13 +99,13 @@ export default function UserTable() {
             <InfoInput
               register={register}
               labelName="Username"
-              inputValue={user.username}
+              inputValue={user && user.username}
               note="You can change your usernam but make sure that this is unique"
             />
             <InfoInput
               register={register}
               labelName="Email"
-              inputValue={user.email}
+              inputValue={user && user.email}
               note="By changing your email, you have to make sure that your email is
             verified. This email will be your account security when your
             password has been compromised."
@@ -115,7 +118,7 @@ export default function UserTable() {
               Change password
             </button>
           </div>
-          <Avatar fileRef={fileRef} />
+          <Avatar fileRef={fileRef} user={user} />
           <input
             ref={fileRef}
             type="file"
@@ -146,6 +149,7 @@ export default function UserTable() {
           handleSetResMsg={handleSetResMsg}
           imageSrc={imageSrc}
           handleCloseCropModal={handleCloseCropModal}
+          handleSetAvatar={handleUserAvatar}
         />
       )}
     </>
