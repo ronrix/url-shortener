@@ -24,6 +24,7 @@ export type UserType = {
   base_url: string;
   email: string;
   status: number;
+  is_google_auth: boolean;
 };
 
 export type ContextType = {

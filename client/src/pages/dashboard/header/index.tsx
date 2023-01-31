@@ -9,6 +9,7 @@ export default function Header() {
   const navigate = useNavigate();
   const ref = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState<UserType>();
+  const [img, setImg] = useState<string>("../../src/assets/images/myself.jpg");
 
   useClickOutside(ref, () => setSignOutBtn(false));
 
@@ -19,6 +20,13 @@ export default function Header() {
         credentials: "include",
       });
       const user = await response.json();
+
+      // adding the image path depending on the user type. if from google auth or normal user
+      if (user.is_google_auth) {
+        setImg(user.img_path);
+      } else {
+        setImg(user.base_url + user.img_path);
+      }
       setUser(user);
     })();
   }, []);
@@ -43,14 +51,7 @@ export default function Header() {
           onClick={() => setSignOutBtn((prev) => !prev)}
           ref={ref}
         >
-          <img
-            src={
-              (user && user.base_url + user.img_path) ||
-              `../../src/assets/images/myself.jpg`
-            }
-            alt="profile pic"
-            className="w-10"
-          />
+          <img src={img} alt="profile pic" className="w-10" />
           {showSignOutBtn && (
             <div
               className="p-2 text-grayish text-xs absolute bg-secondary-black -bottom-9 right-0"
