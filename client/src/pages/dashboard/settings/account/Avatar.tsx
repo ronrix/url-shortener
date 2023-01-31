@@ -2,14 +2,17 @@ import React, { useContext, useRef, useState } from "react";
 import { useClickOutside } from "../../../../hooks/useClickOutside";
 import { CollectionContext, ContextType } from "../../../../context/collection";
 
-export default function Avatar() {
+type Props = {
+  fileRef: React.RefObject<HTMLInputElement>;
+};
+
+export default function Avatar({ fileRef }: Props) {
   const {
     user: { img_path },
   } = useContext<ContextType>(CollectionContext);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
-  const fileRef = useRef<HTMLInputElement | null>(null);
 
   useClickOutside(ref, () => setIsOpen(false));
 
@@ -42,7 +45,6 @@ export default function Avatar() {
               onClick={handleClickFileInput}
             >
               Upload photo
-              <input ref={fileRef} type="file" name="" className="hidden" />
             </div>
             <div className="hover:bg-dark-green py-1 px-4 text-grayish cursor-pointer">
               Set to default
