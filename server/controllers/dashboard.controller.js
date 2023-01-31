@@ -14,7 +14,7 @@ class DashboardController {
     index = (req, res) => {
         const user = req.user;
         this.dashboard.getUserInfo(user).then(data => {
-            res.status(200).json({ data, status: 200});
+            res.status(200).json({ ...data[0], base_url, status: 200});
         }).catch(err => {
             res.status(err.status).json(err);
         });
