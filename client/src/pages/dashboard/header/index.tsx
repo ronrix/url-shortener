@@ -45,7 +45,7 @@ export default function Header() {
         >
           <img
             src={
-              (user && user.base_url + "/" + user.img_path) ||
+              (user && user.base_url + user.img_path) ||
               `../../src/assets/images/myself.jpg`
             }
             alt="profile pic"
