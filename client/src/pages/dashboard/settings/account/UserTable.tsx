@@ -39,6 +39,16 @@ export default function UserTable() {
     }
   }
 
+  function handleSetResMsg(data: { msg: string; status: number }) {
+    setResMsg(data);
+    handleSetShowNotif();
+  }
+
+  function handleSetShowNotif() {
+    setShowNotif(true);
+    setTimeout(() => setShowNotif(false), 2000);
+  }
+
   function onSubmit(data: any) {
     console.log(data);
 
@@ -54,10 +64,8 @@ export default function UserTable() {
       .then((data) => {
         console.log(data);
         if (data.status === 200) {
-          setShowNotif(true);
-          setResMsg(data);
-
-          setTimeout(() => setShowNotif(false), 2000);
+          handleSetResMsg(data);
+          handleSetShowNotif();
         }
       })
       .catch((err) => console.log(err));
@@ -135,6 +143,7 @@ export default function UserTable() {
 
       {cropModal && (
         <UploadAvatarModal
+          handleSetResMsg={handleSetResMsg}
           imageSrc={imageSrc}
           handleCloseCropModal={handleCloseCropModal}
         />
