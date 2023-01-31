@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { UserType } from "../../../../context/collection";
 import { useClickOutside } from "../../../../hooks/useClickOutside";
 
@@ -24,7 +24,7 @@ export default function Avatar({ fileRef, user }: Props) {
       <div className="relative ml-10">
         <img
           src={
-            (user && user.base_url + "/" + user.img_path) ||
+            (user && user.base_url + user.img_path) ||
             "../../src/assets/images/myself.jpg"
           }
           alt="@ronrix"
