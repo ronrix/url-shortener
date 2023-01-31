@@ -80,6 +80,35 @@ class ProfileModel {
             });
         });
     }
+
+    updateAvatar(image_path, userId) {
+        return new Promise(async (resolve, reject) => {
+            // check if the user already has a collection table
+            const user_found = await this.conn._exists("SELECT * FROM users WHERE id = ?", [userId]);
+            if(!user_found) {
+                reject({ msg: "User does not exists", status: 404 });
+            }
+
+            // update the user table with the new avatar file path
+            try {
+                this.conn.connection.execute("UPDATE users SET img_path = ? WHERE id = ?", [image_path, userId], (err, result, _) => {
+                    if(err) {
+                    reject({ msg: err, status: 500 });
+                    }
+                    console.log(result);
+
+                    // if success
+                    if(result.affectedRows) {
+                        resolve({ msg: "Image upload successfully", status: 200 });
+                    }
+
+                    reject({ msg: "Something went wrong upating the avatar", status: 500 });
+                });
+            } catch(err) {
+                reject(err);
+            }
+        });
+    }
 }
 
 module.exports = ProfileModel;
