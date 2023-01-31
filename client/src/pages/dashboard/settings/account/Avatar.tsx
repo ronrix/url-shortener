@@ -1,16 +1,13 @@
 import React, { useContext, useRef, useState } from "react";
+import { UserType } from "../../../../context/collection";
 import { useClickOutside } from "../../../../hooks/useClickOutside";
-import { CollectionContext, ContextType } from "../../../../context/collection";
 
 type Props = {
   fileRef: React.RefObject<HTMLInputElement>;
+  user: UserType;
 };
 
-export default function Avatar({ fileRef }: Props) {
-  const {
-    user: { img_path },
-  } = useContext<ContextType>(CollectionContext);
-
+export default function Avatar({ fileRef, user }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -26,7 +23,10 @@ export default function Avatar({ fileRef }: Props) {
     <div className="flex-1 relative">
       <div className="relative ml-10">
         <img
-          src={img_path || "../../src/assets/images/myself.jpg"}
+          src={
+            (user && user.base_url + "/" + user.img_path) ||
+            "../../src/assets/images/myself.jpg"
+          }
           alt="@ronrix"
           className="rounded-full w-1/2"
         />
