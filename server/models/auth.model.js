@@ -70,7 +70,7 @@ class AuthModel {
 			await this.conn.connection.execute(`
 				INSERT INTO users(username, email, password, img_path) 
 				VALUES(?, ?, ?, ?)`, 
-				[fields.username, fields.email, hashed_password, base_url + fields.avatar], function(err, result, _) {
+				[fields.username, fields.email, hashed_password, fields.avatar], function(err, result, _) {
 					if(err) {
 						reject({msg: err, status: 500});
 					}
