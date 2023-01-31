@@ -1,18 +1,27 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signout } from "../../../api/signout";
+import { UserType } from "../../../context/collection";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 
-type Props = {
-  user: { username: string; img_path: string };
-};
-
-export default function Header({ user }: Props) {
+export default function Header() {
   const [showSignOutBtn, setSignOutBtn] = useState<boolean>(false);
   const navigate = useNavigate();
   const ref = useRef<HTMLDivElement>(null);
+  const [user, setUser] = useState<UserType>();
 
   useClickOutside(ref, () => setSignOutBtn(false));
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch("http://localhost:8000/dashboard", {
+        method: "GET",
+        credentials: "include",
+      });
+      const user = await response.json();
+      setUser(user);
+    })();
+  }, []);
 
   return (
     <nav className="flex justify-between items-center p-4">
@@ -26,7 +35,7 @@ export default function Header({ user }: Props) {
       </div>
       <div className="flex relative">
         <div className="flex flex-col items-end">
-          <h4 className="text-white font-bold">{user.username}</h4>
+          <h4 className="text-white font-bold">{user && user.username}</h4>
           <span className="text-grays text-xs">Super Admin</span>
         </div>
         <div
@@ -35,7 +44,10 @@ export default function Header({ user }: Props) {
           ref={ref}
         >
           <img
-            src={user.img_path || `../../src/assets/images/myself.jpg`}
+            src={
+              (user && user.base_url + "/" + user.img_path) ||
+              `../../src/assets/images/myself.jpg`
+            }
             alt="profile pic"
             className="w-10"
           />
