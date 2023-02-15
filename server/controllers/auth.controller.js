@@ -1,4 +1,3 @@
-const AuthModel = require("../auth.model.js");
 const { User } = require("../models");
 const generateAccessToken = require("../modules/functions/generateAccessToken");
 const generateDefaultAvatar = require("../modules/functions/generateDefaultAvatar");
@@ -6,10 +5,7 @@ const bcrypt = require("bcrypt");
 
 class AuthController {
 
-	constructor() {
-		// instance of models
-		this.auth = new AuthModel();
-	}
+	constructor() { }
 
 	login = async (req, res) => {
 		const fields = req.body;

@@ -1,4 +1,3 @@
-const DashboardModel = require("../dashboard.model");
 const randomstring  = require("randomstring");
 const path = require("path");
 const fs = require("fs");
@@ -8,9 +7,7 @@ const generateScreenshot = require("../modules/functions/generateScreenshot");
 const { base_url } = require("../config");
 
 class DashboardController {
-    constructor() {
-        this.dashboard = new DashboardModel();
-    }
+    constructor() {}
 
     index = async (req, res) => {
         const user = req.user;
@@ -78,7 +75,7 @@ class DashboardController {
                     // then update the table with this new data
                     const collections = user_collections.url_collections;
                     collections.push({ id: collections.length + 1, name: fields.name, details: fields.details, img_url, original_url: fields.originalUrl, short_url: generated_short_string.string, createdAt: new Date(), updatedAt: null });
-                    await Collection.update({ url_collections: collections });
+                    await Collection.update({ url_collections: collections }, { where: { user_id: user.user_id }});
                     
                     res.status(200).json({ msg: "Successfully created new collection", status: 200 });
                     return;
