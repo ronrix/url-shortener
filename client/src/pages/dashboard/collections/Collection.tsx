@@ -31,7 +31,7 @@ export default function Collection({ collection, base_url }: Props) {
           <img src={base_url + collection.img_url + ".png"} alt="" />
         </div>
         <div className="ml-2">
-          <h5 className="text-base text-white">{collection.name}</h5>
+          <h5 className="text-base text-white uppercase">{collection.name}</h5>
           <p className="text-xs text-grays">About: {collection.details}</p>
         </div>
       </div>

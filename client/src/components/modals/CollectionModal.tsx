@@ -33,7 +33,7 @@ export default function CollectionModal({
         {/* close btn | icon */}
         <i
           onClick={handleShowModal}
-          className="fa-solid fa-xmark text-grays text-sm absolute right-0 top-0 rounded-full p-2 hover:text-grayish"
+          className="fa-solid fa-xmark text-grays text-sm absolute right-0 top-0 rounded-full p-2 hover:text-grayish cursor-pointer"
         ></i>
 
         <div className="md:mr-5 flex-1">
@@ -41,7 +41,7 @@ export default function CollectionModal({
         </div>
 
         <div className="flex-1 break-words overflow-x-hidden mt-5 md:mt-0">
-          <h3 className="text-grayish font-bold text-lg">{collection.name}</h3>
+          <h3 className="text-grayish font-bold text-lg uppercase">{collection.name}</h3>
           <p className="text-grays">{collection.details}</p>
 
           <h4 className="text-grayish mt-3">Original URL</h4>
@@ -52,7 +52,7 @@ export default function CollectionModal({
           <h4 className="text-grayish mt-3">Short URL</h4>
           <div className="flex justify-between text-xs">
             <p className="text-grays underline">
-              http://goshort.com/{collection.short_url}
+              {import.meta.env.VITE_BASE_URL + collection.short_url}
             </p>
             <a href="" className="text-grays cursor-pointer group">
               <i className="fa-solid fa-arrow-up-right-from-square mr-2 text-grays group-hover:text-grayish"></i>
