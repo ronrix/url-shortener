@@ -1,6 +1,8 @@
-const AuthModel = require("../models/auth.model");
+const AuthModel = require("../auth.model.js");
+const { User } = require("../models");
 const generateAccessToken = require("../modules/functions/generateAccessToken");
 const generateDefaultAvatar = require("../modules/functions/generateDefaultAvatar");
+const bcrypt = require("bcrypt");
 
 class AuthController {
 
@@ -9,50 +11,68 @@ class AuthController {
 		this.auth = new AuthModel();
 	}
 
-	login = (req, res) => {
+	login = async (req, res) => {
 		const fields = req.body;
 
-		this.auth.login(fields).then(data => {
-			
-			const token = generateAccessToken(data, { expiresIn: '1day'});
-			res.cookie("token", token, { httpOnly: true });
-			res.cookie("c_user", data.id, { httpOnly: false });
-			res.status(200).json({ msg: "Successfully Login", status: 200 });
-
-		}).catch(err => {
-			res.status(err.status).json(err);
-		});
+		// get the user
+		const user = await User.findOne({ where: { username: fields.username }});
+		// check if there is a user found
+		if(!user) {
+			res.status(404).json({ msg: "No user found!", status: 404 });
+			return;
+		}
+		// check password if user found
+		const is_valid = await bcrypt.compare(fields.password, user.password);
+		if(!is_valid) {
+			res.status(404).json({ msg: "Username or password is incorrect", status: 404 });
+			return;
+		}
+		// return success response
+		const token = generateAccessToken({ user_id: user.id }, { expiresIn: '7d'});
+		res.cookie("token", token, { httpOnly: true });
+		res.cookie("c_user", user.id, { httpOnly: false });
+		res.status(200).json({ msg: "Success", status: 200 });
 	}
 
-	register = (req, res) => {
+	register = async (req, res) => {
 		const fields = req.body;
 
+		// adding generated avatar
 		const avatar = generateDefaultAvatar();
 		fields["avatar"] = avatar;
-		this.auth.register(fields).then(data => {
 
-			const token = generateAccessToken(data, { expiresIn: '1day'});
+		const password = await bcrypt.hash(fields.password, 10);
+		try {
+			const user = await User.create({ username: fields.username, email: fields.email, password, img_path: fields.avatar });
+			const token = generateAccessToken({ user_id: user.id }, { expiresIn: '7d'});
 			res.cookie("token", token, { httpOnly: true });
-			res.cookie("c_user", data.id, { httpOnly: false });
-			res.status(200).json({ msg: "Successfully Registered", status: 200 });
-
-		}).catch(err => {
-			res.status(err.status).json(err);
-		});
+			res.cookie("c_user", user.id, { httpOnly: false });
+			res.status(201).json({ msg: "success", status: 200 });
+		} catch(err) {
+			console.log(err.errors[0].message);
+			res.status(500).json({ msg: err.errors[0].message, status: 500 });
+		}
 	}
 
-	googleAuth = (req, res) => {
+	googleAuth = async (req, res) => {
 		const fields = req.body;
 
-		this.auth.googleAuth(fields).then(data => {
-			console.log(data);
-			const token = generateAccessToken(data, { expiresIn: '1day'});
-			res.cookie("token", token, { httpOnly: true });
-			res.cookie("c_user", data.id, { httpOnly: false });
-			res.status(200).json({ msg: "Successful", status: 200});
-		}).catch(err => {
-			res.status(err.status).json(err);
-		});
+		// check if user already exists
+		try {
+			const user = await User.findOne({ where: { email: fields.email }});
+			if(!user) {
+				console.log("no user found");
+				// add the user to db
+				const new_user = await User.create({ username: fields.username, email: fields.email, is_google_auth: true, password: fields.id, img_path: fields.picture });
+				const token = generateAccessToken({ user_id: new_user.id }, { expiresIn: '7d'});
+				res.cookie("token", token, { httpOnly: true });
+				res.cookie("c_user", new_user.id, { httpOnly: false });
+				res.status(201).json({ msg: "success", status: 200 });
+			}
+		} catch(err) {
+			console.log(err);
+			res.status(500).json({ msg: err, status: 500 });
+		}
 	}
 
 	isAuthenticated = (req, res) => {
@@ -74,7 +94,7 @@ class AuthController {
 	signOut = (req, res) => {
 		res.clearCookie("token");
 		res.clearCookie("c_user");
-		res.status(200).json({ msg: "Successfuly sign out", status: 200 });
+		res.status(200).json({ msg: "sign out", status: 200 });
 	}
 
 }
