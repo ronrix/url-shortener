@@ -31,7 +31,9 @@ export default function Collections() {
         Add new collection
         <i className="fa-solid fa-circle-plus text-grayish text-lg ml-2"></i>
       </div>
-      {collection?.url_collections.length ? (
+      {collection &&
+      collection.url_collections &&
+      collection?.url_collections.length ? (
         <div className="text-white grid mobile:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2">
           {collection?.url_collections.map((c: URL_COLLECTIONS_TYPE) => {
             return (
