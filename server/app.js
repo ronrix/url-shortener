@@ -18,6 +18,9 @@ Routes.get().then(routes => {
 
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 
+// connecting to db with sequelize
+const db = require("./models");
+db.sequelize.sync().then(res => {
 /*
 	DOCU: setting up profiler to get the data to be dispplayed, you can turn the profile by doing
 		req.enable_profiler = true
@@ -26,8 +29,8 @@ app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 // const Profiler = require("./modules/profiler/Profiler");
 // app.use(new Profiler().setup);
 
-app.listen(PORT, () => console.log(`Server running in PORT ${PORT}`));
-
+	app.listen(PORT, () => console.log(`Server running in PORT ${PORT}`));
+})
 
 /*
 	DOCU: this file is the server file which handles all files and run it
