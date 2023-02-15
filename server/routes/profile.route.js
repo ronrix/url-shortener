@@ -10,5 +10,6 @@ const authenthicateToken = require("../modules/middlewares/auth.middleware");
 router.post("/update-profile", [authenthicateToken], ProfileController.edit);
 router.post("/update-password", [authenthicateToken], ProfileController.updatePassword);
 router.post("/upload-avatar", [authenthicateToken, upload.single("avatar")], ProfileController.avatar);
+router.get("/set-avatar-to-default", [authenthicateToken], ProfileController.setAvatarBackToDefault);
 
 module.exports = router;
