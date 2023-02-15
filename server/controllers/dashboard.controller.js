@@ -100,6 +100,28 @@ class DashboardController {
             res.status(500).json({ msg: err, status: 500 });
         })
     }
+
+    // short url route
+    // this will be the method to go when a short url was requested
+    // it will check if the short url is valid 
+    goShort = async (req, res) => {
+        const user = req.user;
+        // get params
+        const short_url = req.params.string;
+        try {
+            const { dataValues } = await Collection.findOne({ where: { user_id: user.user_id } });
+            // check if short_url exists in the collections
+            const collection= dataValues.url_collections.find(el => el.short_url === short_url);
+            if(!collection) {
+                res.status(404).json({ msg: "Can't find the collection", status: 404 });
+                return;
+            }
+
+            res.status(200).json({ original: collection.original_url, status: 200 });
+        } catch(err) {
+            res.status(500).json({ msg: err, status: 500 });
+        }
+    }
 }
 
 module.exports = new DashboardController();
