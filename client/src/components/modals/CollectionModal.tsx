@@ -19,6 +19,19 @@ export default function CollectionModal({
     console.log("saving...");
   }
 
+  async function handleRedirectToUrl() {
+    try {
+      const response = await fetch(import.meta.env.VITE_BACKEND_URL + 'u/' + collection.short_url, { method: "GET", credentials: 'include' });
+      const data = await response.json();
+      const a = document.createElement('a');
+      a.target = "_blank";
+      a.href = data.original;
+      a.click();
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div
       className="fixed top-0 left-0 right-0 bottom-0 bg-primary-black bg-opacity-60 flex items-center justify-center"
@@ -54,10 +67,10 @@ export default function CollectionModal({
             <p className="text-grays underline">
               {import.meta.env.VITE_BASE_URL + collection.short_url}
             </p>
-            <a href="" className="text-grays cursor-pointer group">
+            <div onClick={handleRedirectToUrl} className="text-grays cursor-pointer group">
               <i className="fa-solid fa-arrow-up-right-from-square mr-2 text-grays group-hover:text-grayish"></i>
               <span className="group-hover:text-grayish text-grays">visit</span>
-            </a>
+            </div>
           </div>
 
           <div className="flex items-center justify-end mt-5">
