@@ -26,7 +26,7 @@ export default function ChangePasswordModal({ handleCloseModal }: Props) {
     setIsLoading(true);
 
     // request to 'update-password' route to change the password of the user
-    fetch("http://localhost:8000/update-password", {
+    fetch(import.meta.env.VITE_BACKEND_URL + "update-password", {
       method: "POST",
       credentials: "include",
       body: JSON.stringify(data),

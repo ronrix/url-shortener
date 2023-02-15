@@ -15,7 +15,7 @@ export default function Header() {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("http://localhost:8000/dashboard", {
+      const response = await fetch(import.meta.env.VITE_BACKEND_URL + "dashboard", {
         method: "GET",
         credentials: "include",
       });

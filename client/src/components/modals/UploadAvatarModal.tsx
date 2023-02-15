@@ -64,7 +64,7 @@ export default function UploadAvatarModal({
         const formData = new FormData();
         formData.append("avatar", file as Blob, "avatar.jpeg");
 
-        fetch("http://localhost:8000/upload-avatar", {
+        fetch(import.meta.env.VITE_BACKEND_URL + "upload-avatar", {
           method: "POST",
           credentials: "include",
           body: formData,

@@ -27,7 +27,7 @@ export default function Avatar({ fileRef, user }: Props) {
     e.stopPropagation();
     setIsLoading(true);
     const response = await fetch(
-      "http://localhost:8000/set-avatar-to-default",
+      import.meta.env.VITE_BACKEND_URL + "set-avatar-to-default",
       { method: "GET", credentials: "include" }
     );
     const data = await response.json();

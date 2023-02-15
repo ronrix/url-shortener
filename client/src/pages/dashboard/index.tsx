@@ -14,7 +14,7 @@ export default function Dashboard() {
   useEffect(() => {
     // fetch all the url collections
     // set the loading to false after getting and passing all the requirements to request to a protected route
-    fetch("http://localhost:8000/get-collections", {
+    fetch(import.meta.env.VITE_BACKEND_URL + "get-collections", {
       method: "GET",
       credentials: "include",
     })

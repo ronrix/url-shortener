@@ -1,5 +1,5 @@
  export async function signout(navigate: any) {
-  fetch("http://localhost:8000/signout", {
+  fetch(import.meta.env.VITE_BACKEND_URL + "signout", {
       method: "GET",
       credentials: "include",
     })

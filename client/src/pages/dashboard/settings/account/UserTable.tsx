@@ -55,7 +55,7 @@ export default function UserTable({ user, handleUserAvatar }: Props) {
   function onSubmit(data: any) {
     console.log(data);
 
-    fetch("http://localhost:8000/update-profile", {
+    fetch(import.meta.env.VITE_BACKEND_URL + "update-profile", {
       method: "POST",
       credentials: "include",
       headers: {

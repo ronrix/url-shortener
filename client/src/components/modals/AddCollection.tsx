@@ -27,7 +27,7 @@ export default function AddCollection({
   function onSubmit(data: any) {
     setIsLoading(true);
 
-    fetch("http://localhost:8000/save-collection", {
+    fetch(import.meta.env.VITE_BACKEND_URL +"save-collection", {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
