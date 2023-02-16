@@ -122,6 +122,39 @@ class DashboardController {
             res.status(500).json({ msg: err, status: 500 });
         }
     }
+
+    editCollection = async (req, res) => {
+        const user = req.user;
+        const fields = req.body;
+
+        try {
+            // get the collections
+            const { dataValues } = await Collection.findOne({ where: { user_id: user.user_id }});
+
+            // check if there is a collection found
+            if(!dataValues) {
+                throw "No collection found!";
+            }
+
+            // get the collection from the collections and update with new values
+            const index = dataValues.url_collections.findIndex(el => el.id === fields.id);
+            // update collection with new values
+            dataValues.url_collections[index].name = fields.collection_name;
+            dataValues.url_collections[index].details = fields.collection_details;
+            dataValues.url_collections[index].original_url = fields.original_url;
+
+            // TODO: update tabale
+            const result = await Collection.update(dataValues, { where: { user_id: user.user_id }});
+            if(!result.length) {
+                throw "Something went wrong!";
+            }
+            res.status(200).json({ msg: "success", status: 200 });
+
+        } catch(err) {
+            console.log(err);
+            res.status(500).json({ msg: err, status: 500 });
+        }
+    }
 }
 
 module.exports = new DashboardController();
