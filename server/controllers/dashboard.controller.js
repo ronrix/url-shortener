@@ -149,7 +149,22 @@ class DashboardController {
                 throw "Something went wrong!";
             }
             res.status(200).json({ msg: "success", status: 200 });
+        } catch(err) {
+            console.log(err);
+            res.status(500).json({ msg: err, status: 500 });
+        }
+    }
 
+    redirectToShortUrl = async (req, res) => {
+        try {
+            const collections = await Collection.findAll();
+            collections.map(collection => {
+                collection.url_collections.map(url => {
+                    if(url.short_url === req.params.id) {
+                        res.redirect(url.original_url);
+                    }
+                })
+            });
         } catch(err) {
             console.log(err);
             res.status(500).json({ msg: err, status: 500 });

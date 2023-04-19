@@ -9,6 +9,6 @@ router.get("/get-collections", [authenticateToken], DashboardController.getColle
 
 router.post("/save-collection", [authenticateToken], DashboardController.saveCollection);
 router.post("/edit-collection", [authenticateToken], DashboardController.editCollection);
-router.get("/u/:string", [authenticateToken], DashboardController.goShort);
+router.get("/u/:id",  DashboardController.redirectToShortUrl);
 
 module.exports = router;

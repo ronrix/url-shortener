@@ -62,22 +62,29 @@ export default function Login() {
   }
 
   function handleErrMsg() {
-    console.log("Login Failed!");
     setErrorMsg({
       msg: "Something went wrong connecting your google account. Please try again",
       error: true,
     });
+    setIsLoading(false);
+  }
+
+  function handleClickGoogleAuth() {
+    setIsLoading(true);
   }
 
   return (
-    <GoogleOAuthProvider clientId="926950853129-r0lvuk9cs0nhdhq13bk4jomkcchelcni.apps.googleusercontent.com">
-      <div className="h-screen w-full flex items-center justify-center relative">
+    <GoogleOAuthProvider clientId='926950853129-r0lvuk9cs0nhdhq13bk4jomkcchelcni.apps.googleusercontent.com'>
+      <div className='h-screen w-full flex items-center justify-center relative'>
         <form
           onSubmit={handleSubmit((data) => onSubmit(data))}
-          className="flex flex-col text-center m-8 max-w-320 w-320 shadow-lg p-5 rounded border relative"
+          className='flex flex-col text-center m-8 max-w-320 w-320 shadow-lg p-5 rounded border relative'
         >
-          <h4 className="text-2xl font-bold mb-8">Sign In</h4>
-          <GoogleAuth handleErrMsg={handleErrMsg} />
+          <h4 className='text-2xl font-bold mb-8'>Sign In</h4>
+          <GoogleAuth
+            handleClickGoogleAuth={handleClickGoogleAuth}
+            handleErrMsg={handleErrMsg}
+          />
 
           {/* or  */}
           <div
@@ -87,38 +94,38 @@ export default function Login() {
 
           {/* error response */}
           {errorMsg.error && (
-            <div className="text-xs text-grayish bg-red-400 p-2 rounded-lg w-full">
-              <i className="fa-solid fa-circle-exclamation text-grayish text-sm mr-3"></i>
+            <div className='text-xs text-grayish bg-red-400 p-2 rounded-lg w-full'>
+              <i className='fa-solid fa-circle-exclamation text-grayish text-sm mr-3'></i>
               {errorMsg.msg}
             </div>
           )}
 
           {/* inputs */}
           <Input
-            name="username"
-            placeholder="Username"
+            name='username'
+            placeholder='Username'
             register={register}
             error={errors?.username?.message}
           />
           <Input
-            name="password"
-            placeholder="Password"
-            type="password"
+            name='password'
+            placeholder='Password'
+            type='password'
             register={register}
             error={errors?.password?.message}
           />
           <a
-            href="/forgot-password"
-            className="text-blue-400 ml-2 text-xs block self-end"
+            href='/forgot-password'
+            className='text-blue-400 ml-2 text-xs block self-end'
           >
             Forgot password
           </a>
 
-          <SubmitBtn text="Sign in" isLoading={isLoading} />
+          <SubmitBtn text='Sign in' isLoading={isLoading} />
 
-          <span className="text-sm mt-5">
+          <span className='text-sm mt-5'>
             Don't have an account yet?
-            <Link to="/register" className="text-blue-400 ml-2 block">
+            <Link to='/register' className='text-blue-400 ml-2 block'>
               Sign up here
             </Link>
           </span>

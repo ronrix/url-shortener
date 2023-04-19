@@ -65,6 +65,11 @@ class AuthController {
 				res.cookie("c_user", new_user.id, { httpOnly: false });
 				res.status(201).json({ msg: "success", status: 200 });
 			}
+			// login the user if google account already exists in the db
+			const token = generateAccessToken({ user_id: user.id }, { expiresIn: '7d'});
+			res.cookie("token", token, { httpOnly: true });
+			res.cookie("c_user", user.id, { httpOnly: false });
+			res.status(200).json({ msg: "success", status: 200 });
 		} catch(err) {
 			console.log(err);
 			res.status(500).json({ msg: err, status: 500 });

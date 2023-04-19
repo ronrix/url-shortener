@@ -5,17 +5,22 @@ import { useNavigate } from "react-router-dom";
 
 type Props = {
   handleErrMsg: () => void;
+  handleClickGoogleAuth: () => void;
 };
 
-export default function GoogleAuth({ handleErrMsg }: Props) {
+export default function GoogleAuth({
+  handleErrMsg,
+  handleClickGoogleAuth,
+}: Props) {
   const navigate = useNavigate();
   return (
-    <div className="mx-auto mb-5">
+    <div className='mx-auto mb-5'>
       <GoogleLogin
+        click_listener={handleClickGoogleAuth}
         onSuccess={async ({ credential }) => {
           const decoded: any = jwtDecode(credential as string);
 
-          fetch("http://localhost:8000/google-auth", {
+          fetch(import.meta.env.VITE_BACKEND_URL + "google-auth", {
             method: "POST",
             body: JSON.stringify({
               id: decoded.sub,

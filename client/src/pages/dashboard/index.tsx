@@ -40,25 +40,25 @@ export default function Dashboard() {
   return (
     <>
       {isLoading ? (
-        <div className="h-screen w-screen flex items-center justify-center">
+        <div className='h-screen w-screen flex items-center justify-center'>
           <img
-            src="../../src/assets/loading.gif"
-            alt="loading animation"
-            className="w-40"
+            src='../../src/assets/loading.gif'
+            alt='loading animation'
+            className='w-40'
           />
         </div>
       ) : (
-        <div className="bg-primary-black min-h-screen">
-          <div className="container mx-auto">
+        <div className='bg-primary-black min-h-screen'>
+          <div className='container mx-auto'>
             <Header />
 
             {/* body */}
-            <div className="mt-10 p-5">
-              <h1 className="text-light-gray font-bold text-4xl">
+            <div className='mt-10 p-5'>
+              <h1 className='text-light-gray font-bold text-4xl'>
                 Main Dashboard
               </h1>
               <Navs />
-              <div className="mt-10">
+              <div className='mt-10'>
                 <CollectionContext.Provider value={{ collection }}>
                   <Outlet />
                 </CollectionContext.Provider>
